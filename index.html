@@ -634,6 +634,53 @@
             color: inherit;
             display: block;
         }
+
+        .converter-container {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .converter-container h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .converter-form {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .converter-form .form-group {
+            margin-bottom: 0;
+        }
+
+        .converter-form select,
+        .converter-form input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--surface);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .result {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -1244,6 +1291,8 @@
             
             // Her 5 dakikada bir haberleri güncelle
             setInterval(haberleriGuncelle, 300000);
+
+            donusturucuOlustur();
         });
 
         // Coin fiyatlarını güncelle
@@ -1424,6 +1473,89 @@
                     card.style.transitionDelay = `${index * 0.15}s`;
                     setTimeout(() => card.classList.add('visible'), 100);
                 });
+            }
+        }
+
+        async function donusturucuOlustur() {
+            try {
+                // Desteklenen para birimleri
+                const paraBirimleri = ['try', 'usd', 'eur', 'gbp'];
+                const kriptoParalar = ['bitcoin', 'ethereum', 'solana', 'ripple', 'cardano'];
+
+                // Para birimi seçenekleri için HTML oluştur
+                const paraBirimiHTML = paraBirimleri.map(birim => 
+                    `<option value="${birim}">${birim.toUpperCase()}</option>`
+                ).join('');
+
+                // Kripto para seçenekleri için HTML oluştur
+                const kriptoHTML = kriptoParalar.map(kripto => 
+                    `<option value="${kripto}">${kripto.charAt(0).toUpperCase() + kripto.slice(1)}</option>`
+                ).join('');
+
+                // Dönüştürücü formu oluştur
+                const donusturucuHTML = `
+                    <div class="converter-container">
+                        <h3>Kripto Para Dönüştürücü</h3>
+                        <div class="converter-form">
+                            <div class="form-group">
+                                <label>Miktar</label>
+                                <input type="number" id="amount" min="0" step="any" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Kaynak Para Birimi</label>
+                                <select id="fromCurrency">
+                                    ${kriptoHTML}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hedef Para Birimi</label>
+                                <select id="toCurrency">
+                                    ${paraBirimiHTML}
+                                </select>
+                            </div>
+                            <div class="result" id="convertResult">
+                                1 BTC = ... TRY
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // HTML'i sayfaya ekle
+                document.querySelector('.market-stats .container').insertAdjacentHTML('beforeend', donusturucuHTML);
+
+                // Event listener'ları ekle
+                ['amount', 'fromCurrency', 'toCurrency'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', donusturucuGuncelle);
+                });
+
+                // İlk dönüşümü yap
+                await donusturucuGuncelle();
+
+            } catch (hata) {
+                console.error('Dönüştürücü oluşturma hatası:', hata);
+            }
+        }
+
+        async function donusturucuGuncelle() {
+            const miktar = document.getElementById('amount').value;
+            const kaynakPara = document.getElementById('fromCurrency').value;
+            const hedefPara = document.getElementById('toCurrency').value;
+            const sonucElement = document.getElementById('convertResult');
+
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${kaynakPara}&vs_currencies=${hedefPara}`);
+                const data = await response.json();
+
+                if (data[kaynakPara]) {
+                    const kur = data[kaynakPara][hedefPara];
+                    const sonuc = (miktar * kur).toLocaleString('tr-TR', {
+                        maximumFractionDigits: 2
+                    });
+                    sonucElement.innerHTML = `${miktar} ${kaynakPara.toUpperCase()} = ${sonuc} ${hedefPara.toUpperCase()}`;
+                }
+            } catch (hata) {
+                console.error('Dönüşüm hatası:', hata);
+                sonucElement.innerHTML = 'Dönüşüm sırasında bir hata oluştu';
             }
         }
     </script>

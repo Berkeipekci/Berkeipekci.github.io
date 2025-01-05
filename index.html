@@ -935,12 +935,6 @@
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
             z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .quiz-modal.active {
-            opacity: 1;
         }
 
         .quiz-modal-content {
@@ -952,30 +946,6 @@
             padding: 2rem;
             border-radius: 16px;
             border: 1px solid rgba(153, 69, 255, 0.2);
-            transform: translateY(-50px);
-            transition: transform 0.3s ease;
-        }
-
-        .quiz-modal.active .quiz-modal-content {
-            transform: translateY(0);
-        }
-
-        .close-button {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 2rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-button:hover {
-            color: var(--primary);
-        }
-
-        .quiz-container {
-            margin-top: 2rem;
         }
 
         .quiz-option {
@@ -990,29 +960,30 @@
             transition: all 0.3s ease;
         }
 
-        .quiz-option:hover {
-            border-color: var(--primary);
-            transform: translateX(10px);
+        .quiz-option.correct {
+            background: rgba(20, 241, 149, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.wrong {
+            background: rgba(255, 71, 71, 0.1);
+            border-color: #ff4747;
         }
     </style>
     <!-- Quiz Modal -->
     <div id="quizModal" class="quiz-modal">
         <div class="quiz-modal-content">
-            <span class="close-button" onclick="quizModalKapat()">&times;</span>
-            <h2 class="section-title">Bilgilerinizi Test Edin</h2>
-            <div class="quiz-container">
-                <div class="quiz-card fade-in">
-                    <div class="quiz-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="quiz-content">
-                        <h3 class="quiz-question">Soru yükleniyor...</h3>
-                        <div class="quiz-options"></div>
-                    </div>
-                    <div class="quiz-controls">
-                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
-                        <div class="quiz-score">Puan: <span>0</span></div>
-                    </div>
+            <div class="quiz-card">
+                <div class="quiz-progress">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="quiz-content">
+                    <h3 class="quiz-question">Soru yükleniyor...</h3>
+                    <div class="quiz-options"></div>
+                </div>
+                <div class="quiz-controls">
+                    <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
+                    <div class="quiz-score">Puan: <span>0</span></div>
                 </div>
             </div>
         </div>
@@ -1689,9 +1660,15 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
             });
         });
 
@@ -2162,47 +2139,12 @@
         let puan = 0;
 
         function quizBaslat() {
+            mevcutSoru = 0;
+            puan = 0;
             const quizCard = document.querySelector('.quiz-card');
-            const soruElement = document.querySelector('.quiz-question');
-            const seceneklerElement = document.querySelector('.quiz-options');
-            const sonrakiButton = document.querySelector('.quiz-next');
-            const puanElement = document.querySelector('.quiz-score span');
-            const progressBar = document.querySelector('.progress-bar');
-
-            function soruGoster() {
-                const soru = quizSorulari[mevcutSoru];
-                soruElement.textContent = soru.soru;
-                seceneklerElement.innerHTML = '';
-                progressBar.style.width = `${(mevcutSoru / quizSorulari.length) * 100}%`;
-
-                soru.secenekler.forEach((secenek, index) => {
-                    const button = document.createElement('button');
-                    button.className = 'quiz-option';
-                    button.textContent = secenek;
-                    button.style.animation = `slideIn 0.5s ease ${index * 0.1}s forwards`;
-                    button.onclick = () => cevapKontrol(index);
-                    seceneklerElement.appendChild(button);
-                });
-
-                sonrakiButton.disabled = true;
-            }
-
-            function cevapKontrol(secilenIndex) {
-                const secenekler = document.querySelectorAll('.quiz-option');
-                secenekler.forEach(secenek => secenek.onclick = null);
-
-                if (secilenIndex === quizSorulari[mevcutSoru].dogruCevap) {
-                    secenekler[secilenIndex].classList.add('correct');
-                    puan += 10;
-                    puanElement.textContent = puan;
-                } else {
-                    secenekler[secilenIndex].classList.add('wrong');
-                    secenekler[quizSorulari[mevcutSoru].dogruCevap].classList.add('correct');
-                }
-
-                sonrakiButton.disabled = false;
-            }
-
+            const sonrakiButton = quizCard.querySelector('.quiz-next');
+            
+            // Sonraki buton için event listener
             sonrakiButton.onclick = () => {
                 mevcutSoru++;
                 if (mevcutSoru < quizSorulari.length) {
@@ -2211,12 +2153,56 @@
                     quizCard.innerHTML = `
                         <h3>Test Tamamlandı!</h3>
                         <p>Toplam Puanınız: ${puan}</p>
-                        <button class="btn-primary" onclick="location.reload()">Tekrar Dene</button>
+                        <button class="btn-primary" onclick="quizBaslat()">Tekrar Dene</button>
                     `;
                 }
             };
-
+            
             soruGoster();
+        }
+
+        function soruGoster() {
+            const soru = quizSorulari[mevcutSoru];
+            const quizCard = document.querySelector('.quiz-card');
+            const soruElement = quizCard.querySelector('.quiz-question');
+            const seceneklerElement = quizCard.querySelector('.quiz-options');
+            const sonrakiButton = quizCard.querySelector('.quiz-next');
+            const progressBar = quizCard.querySelector('.progress-bar');
+
+            soruElement.textContent = soru.soru;
+            seceneklerElement.innerHTML = '';
+            progressBar.style.width = `${(mevcutSoru / quizSorulari.length) * 100}%`;
+
+            soru.secenekler.forEach((secenek, index) => {
+                const button = document.createElement('button');
+                button.className = 'quiz-option';
+                button.textContent = secenek;
+                button.style.animation = `slideIn 0.5s ease ${index * 0.1}s forwards`;
+                button.onclick = () => cevapKontrol(index);
+                seceneklerElement.appendChild(button);
+            });
+
+            sonrakiButton.disabled = true;
+        }
+
+        function cevapKontrol(secilenIndex) {
+            const quizCard = document.querySelector('.quiz-card');
+            const secenekler = quizCard.querySelectorAll('.quiz-option');
+            const sonrakiButton = quizCard.querySelector('.quiz-next');
+            const puanElement = quizCard.querySelector('.quiz-score span');
+            
+            secenekler.forEach(secenek => secenek.onclick = null);
+
+            if (secilenIndex === quizSorulari[mevcutSoru].dogruCevap) {
+                secenekler[secilenIndex].classList.add('correct');
+                puan += 10;
+                puanElement.textContent = puan;
+            } else {
+                secenekler[secilenIndex].classList.add('wrong');
+                secenekler[quizSorulari[mevcutSoru].dogruCevap].classList.add('correct');
+            }
+
+            sonrakiButton.disabled = false;
         }
 
         // Quiz'i başlat
@@ -2265,6 +2251,18 @@
                 quizModalKapat();
             }
         }
+
+        setInterval(() => {
+            Object.keys(cryptoData).forEach(coin => {
+                const chartElement = document.querySelector(`#${coin.toLowerCase()}Chart`);
+                if (chartElement) {
+                    const coinCard = chartElement.closest('.coin-card');
+                    if (coinCard) {
+                        // Mevcut güncelleme kodu
+                    }
+                }
+            });
+        }, 30000);
     </script>
 </body>
 </html>

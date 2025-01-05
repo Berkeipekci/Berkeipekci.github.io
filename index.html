@@ -172,13 +172,6 @@
             padding: 1.5rem;
             border: 1px solid rgba(153, 69, 255, 0.2);
             transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .coin-card.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .coin-card:hover {
@@ -610,84 +603,6 @@
             transform: translateY(0);
         }
     </style>
-    <script>
-        const cryptoData = {
-            'bitcoin': {
-                name: 'Bitcoin',
-                symbol: 'BTC',
-                price: 65000,
-                change: 2.5,
-                image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 1000 + 64000)
-                }
-            },
-            'ethereum': {
-                name: 'Ethereum',
-                symbol: 'ETH',
-                price: 3500,
-                change: -1.2,
-                image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 100 + 3450)
-                }
-            },
-            'solana': {
-                name: 'Solana',
-                symbol: 'SOL',
-                price: 125,
-                change: 5.8,
-                image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 10 + 120)
-                }
-            }
-        };
-
-        function createChart(coinId) {
-            const ctx = document.getElementById(`${coinId}Chart`).getContext('2d');
-            const data = cryptoData[coinId].sparkline_in_7d.price;
-            const isPositive = cryptoData[coinId].change >= 0;
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: Array(24).fill(''),
-                    datasets: [{
-                        data: data,
-                        borderColor: isPositive ? '#14F195' : '#ff4747',
-                        borderWidth: 2,
-                        fill: true,
-                        backgroundColor: isPositive 
-                            ? 'rgba(20, 241, 149, 0.1)'
-                            : 'rgba(255, 71, 71, 0.1)',
-                        tension: 0.4,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            display: false
-                        },
-                        y: {
-                            display: false
-                        }
-                    },
-                    interaction: {
-                        intersect: false
-                    }
-                }
-            });
-        }
-    </script>
 </head>
 <body>
     <div class="geometric-background">
@@ -710,19 +625,217 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero">
+    <section class="hero">
         <div class="container hero-content">
-            <h1>Kripto Dünyasını Keşfedin</h1>
-            <p>Gerçek zamanlı kripto para fiyatları, haberler ve analizler ile kripto ekosistemini yakından takip edin.</p>
+            <h1>Kripto Dünyasını Keşfet</h1>
+            <p>En güncel kripto para verileri, haberler ve analizler tek platformda.</p>
         </div>
     </section>
 
     <!-- Market Stats Section -->
     <section id="markets" class="market-stats">
         <div class="container">
-            <h2 class="section-title">En Popüler Kripto Paralar</h2>
+            <h2 class="section-title">En Popüler 10 Kripto Para</h2>
             <div class="coin-grid">
-                <!-- Coin kartları JavaScript ile eklenecek -->
+                <!-- Bitcoin -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Bitcoin</div>
+                                <div class="coin-symbol">BTC</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$48,250.32</div>
+                            <div class="price-change positive">+2.5%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="btcChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Ethereum -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Ethereum</div>
+                                <div class="coin-symbol">ETH</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$2,890.15</div>
+                            <div class="price-change negative">-1.2%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="ethChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Diğer 8 coin için benzer kartlar -->
+                <!-- BNB -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" class="coin-icon">
+                            <div>
+                                <div class="coin-name">BNB</div>
+                                <div class="coin-symbol">BNB</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$312.45</div>
+                            <div class="price-change positive">+1.2%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="bnbChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Solana -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Solana</div>
+                                <div class="coin-symbol">SOL</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$98.75</div>
+                            <div class="price-change positive">+5.8%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="solChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- XRP -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" alt="XRP" class="coin-icon">
+                            <div>
+                                <div class="coin-name">XRP</div>
+                                <div class="coin-symbol">XRP</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$0.58</div>
+                            <div class="price-change negative">-2.1%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="xrpChart"></canvas>
+                    </div>
+                </div>
+                <!-- Cardano -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/cardano-ada-logo.png" alt="Cardano" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Cardano</div>
+                                <div class="coin-symbol">ADA</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$0.45</div>
+                            <div class="price-change positive">+3.2%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="adaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Dogecoin -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" alt="Dogecoin" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Dogecoin</div>
+                                <div class="coin-symbol">DOGE</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$0.085</div>
+                            <div class="price-change positive">+1.8%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="dogeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Polygon -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Polygon</div>
+                                <div class="coin-symbol">MATIC</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$0.78</div>
+                            <div class="price-change negative">-0.5%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="maticChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Polkadot -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/polkadot-new-dot-logo.png" alt="Polkadot" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Polkadot</div>
+                                <div class="coin-symbol">DOT</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$6.85</div>
+                            <div class="price-change positive">+2.3%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="dotChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chainlink -->
+                <div class="coin-card">
+                    <div class="coin-header">
+                        <div class="coin-info">
+                            <img src="https://cryptologos.cc/logos/chainlink-link-logo.png" alt="Chainlink" class="coin-icon">
+                            <div>
+                                <div class="coin-name">Chainlink</div>
+                                <div class="coin-symbol">LINK</div>
+                            </div>
+                        </div>
+                        <div class="coin-price">
+                            <div class="current-price">$14.25</div>
+                            <div class="price-change positive">+4.1%</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="linkChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -948,155 +1061,129 @@
     </footer>
 
     <script>
-        // CoinGecko API endpoint'leri
-        const COINGECKO_API = {
-            BASE_URL: 'https://api.coingecko.com/api/v3',
-            COINS: {
-                MARKET_DATA: '/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&sparkline=true'
+        // Coin verileri güncellendi
+        const cryptoData = {
+            BTC: {
+                name: 'Bitcoin',
+                price: 98161.42,
+                change: 0.03,
+                color: '#F7931A', // Bitcoin turuncu
+                history: [95000, 96000, 97000, 97500, 98000, 98161]
+            },
+            ETH: {
+                name: 'Ethereum',
+                price: 3637.08,
+                change: 1.15,
+                color: '#627EEA', // Ethereum mavi
+                history: [3400, 3450, 3500, 3550, 3600, 3637]
+            },
+            SOL: {
+                name: 'Solana',
+                price: 216.83,
+                change: 0.32,
+                color: '#00FFA3', // Solana yeşil
+                history: [190, 195, 200, 210, 215, 216.83]
+            },
+            BNB: {
+                name: 'BNB',
+                price: 711.94,
+                change: 1.27,
+                color: '#F3BA2F', // BNB sarı
+                history: [700, 705, 708, 710, 711, 711.94]
+            },
+            XRP: {
+                name: 'XRP',
+                price: 2.39,
+                change: 3.29,
+                color: '#23292F', // XRP siyah
+                history: [2.20, 2.25, 2.30, 2.35, 2.37, 2.39]
+            },
+            ADA: {
+                name: 'Cardano',
+                price: 1.06,
+                change: 3.47,
+                color: '#0033AD', // Cardano mavi
+                history: [0.90, 0.95, 1.00, 1.03, 1.05, 1.06]
+            },
+            DOGE: {
+                name: 'Dogecoin',
+                price: 0.3888,
+                change: 0.17,
+                color: '#C2A633', // Dogecoin altın
+                history: [0.35, 0.36, 0.37, 0.38, 0.385, 0.3888]
+            },
+            DOT: {
+                name: 'Polkadot',
+                price: 7.62,
+                change: -0.5,
+                color: '#E6007A', // Polkadot pembe
+                history: [7.70, 7.68, 7.66, 7.64, 7.63, 7.62]
+            },
+            LINK: {
+                name: 'Chainlink',
+                price: 23.32,
+                change: 4.1,
+                color: '#2A5ADA', // Chainlink mavi
+                history: [22.00, 22.40, 22.80, 23.00, 23.20, 23.32]
+            },
+            MATIC: {
+                name: 'Polygon',
+                price: 0.52,
+                change: -0.45,
+                color: '#8247E5', // Polygon mor
+                history: [0.54, 0.53, 0.525, 0.522, 0.521, 0.52]
             }
         };
 
-        async function kriptoVerileriniGetir() {
-            try {
-                const response = await fetch(`${COINGECKO_API.BASE_URL}${COINGECKO_API.COINS.MARKET_DATA}`);
-                return await response.json();
-            } catch (hata) {
-                console.error('Veri çekme hatası:', hata);
-                return [];
-            }
-        }
+        // Grafik oluşturma fonksiyonu güncellendi
+        function createChart(coinSymbol) {
+            const ctx = document.getElementById(`${coinSymbol.toLowerCase()}Chart`).getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            const data = cryptoData[coinSymbol];
+            
+            gradient.addColorStop(0, `${data.color}33`);
+            gradient.addColorStop(1, `${data.color}00`);
 
-        function grafikOlustur(coinVerisi, elementId) {
-            const ctx = document.getElementById(elementId).getContext('2d');
             return new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: Array(coinVerisi.sparkline_in_7d.price.length).fill(''),
+                    labels: ['5s', '4s', '3s', '2s', '1s', 'Şimdi'],
                     datasets: [{
-                        data: coinVerisi.sparkline_in_7d.price,
-                        borderColor: '#9945FF',
+                        label: coinSymbol,
+                        data: data.history,
+                        borderColor: data.color,
                         borderWidth: 2,
                         fill: true,
-                        backgroundColor: 'rgba(153, 69, 255, 0.1)',
+                        backgroundColor: gradient,
                         tension: 0.4,
-                        pointRadius: 0
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointHoverBackgroundColor: data.color
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false }
+                        legend: {
+                            display: false
+                        }
                     },
                     scales: {
-                        x: { display: false },
-                        y: { display: false }
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
                     }
                 }
             });
         }
-
-        // Kripto para verileri için başlangıç değerleri
-        const cryptoData = {
-            'bitcoin': {
-                name: 'Bitcoin',
-                symbol: 'BTC',
-                price: 65000,
-                change: 2.5,
-                image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 1000 + 64000)
-                }
-            },
-            'ethereum': {
-                name: 'Ethereum',
-                symbol: 'ETH',
-                price: 3500,
-                change: -1.2,
-                image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 100 + 3450)
-                }
-            },
-            'solana': {
-                name: 'Solana',
-                symbol: 'SOL',
-                price: 125,
-                change: 5.8,
-                image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 10 + 120)
-                }
-            },
-            'cardano': {
-                name: 'Cardano',
-                symbol: 'ADA',
-                price: 0.65,
-                change: -0.5,
-                image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png',
-                sparkline_in_7d: {
-                    price: Array(24).fill(0).map(() => Math.random() * 0.1 + 0.60)
-                }
-            }
-        };
-
-        // Coin kartlarını oluştur
-        document.addEventListener('DOMContentLoaded', () => {
-            const coinGrid = document.querySelector('.coin-grid');
-            
-            Object.entries(cryptoData).forEach(([id, coin]) => {
-                const card = document.createElement('div');
-                card.className = 'coin-card';
-                card.innerHTML = `
-                    <div class="coin-header">
-                        <div class="coin-info">
-                            <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                            <div>
-                                <div class="coin-name">${coin.name}</div>
-                                <div class="coin-symbol">${coin.symbol}</div>
-                            </div>
-                        </div>
-                        <div class="coin-price">
-                            <div class="current-price">$${coin.price.toFixed(2)}</div>
-                            <div class="price-change ${coin.change >= 0 ? 'positive' : 'negative'}">
-                                ${coin.change >= 0 ? '+' : ''}${coin.change.toFixed(2)}%
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="${id}Chart"></canvas>
-                    </div>
-                `;
-                coinGrid.appendChild(card);
-                
-                // Grafik oluşturma
-                const ctx = document.getElementById(`${id}Chart`).getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: Array(24).fill(''),
-                        datasets: [{
-                            data: coin.sparkline_in_7d.price,
-                            borderColor: coin.change >= 0 ? '#14F195' : '#ff4747',
-                            borderWidth: 2,
-                            fill: false,
-                            tension: 0.4,
-                            pointRadius: 0
-                        }]
-                    },
-                    options: {
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            x: { display: false },
-                            y: { display: false }
-                        },
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
-            });
-        });
 
         // E-posta gönderimi için fonksiyon
         function sendEmail(event) {

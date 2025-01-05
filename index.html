@@ -934,48 +934,81 @@
     </footer>
 
     <script>
-        const coinIds = {
-            'BTC': 'bitcoin',
-            'ETH': 'ethereum',
-            'SOL': 'solana',
-            'BNB': 'binancecoin',
-            'XRP': 'ripple'
+        // Kripto para verileri için obje
+        const cryptoData = {
+            BTC: { price: 0, change: 0 },
+            ETH: { price: 0, change: 0 },
+            SOL: { price: 0, change: 0 },
+            BNB: { price: 0, change: 0 },
+            XRP: { price: 0, change: 0 }
         };
 
-        async function fetchCoinData(symbol) {
+        // CoinGecko API'den verileri çek
+        async function fetchCryptoData() {
             try {
-                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinIds[symbol]}&vs_currencies=usd&include_24hr_change=true`);
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple&vs_currencies=usd&include_24hr_change=true');
                 const data = await response.json();
-                const coin = data[coinIds[symbol]];
                 
-                const card = document.querySelector(`[data-coin="${symbol}"]`);
+                // Verileri güncelle
+                cryptoData.BTC = { 
+                    price: data.bitcoin.usd, 
+                    change: data.bitcoin.usd_24h_change 
+                };
+                cryptoData.ETH = { 
+                    price: data.ethereum.usd, 
+                    change: data.ethereum.usd_24h_change 
+                };
+                cryptoData.SOL = { 
+                    price: data.solana.usd, 
+                    change: data.solana.usd_24h_change 
+                };
+                cryptoData.BNB = { 
+                    price: data.binancecoin.usd, 
+                    change: data.binancecoin.usd_24h_change 
+                };
+                cryptoData.XRP = { 
+                    price: data.ripple.usd, 
+                    change: data.ripple.usd_24h_change 
+                };
+
+                // UI'ı güncelle
+                updateUI();
+            } catch (error) {
+                console.error('Veri çekme hatası:', error);
+            }
+        }
+
+        // UI'ı güncelle
+        function updateUI() {
+            Object.keys(cryptoData).forEach(coin => {
+                const card = document.querySelector(`[data-coin="${coin}"]`);
                 if (card) {
                     const priceElement = card.querySelector('.current-price');
                     const changeElement = card.querySelector('.price-change');
                     
-                    priceElement.textContent = `$${coin.usd.toLocaleString('tr-TR')}`;
-                    const change = coin.usd_24h_change.toFixed(2);
-                    changeElement.textContent = `${change}%`;
-                    changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+                    if (priceElement) {
+                        priceElement.textContent = `$${cryptoData[coin].price.toLocaleString('tr-TR')}`;
+                    }
+                    
+                    if (changeElement) {
+                        const change = cryptoData[coin].change;
+                        changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+                        changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+                    }
                 }
-            } catch (error) {
-                console.error(`${symbol} için veri çekme hatası:`, error);
-            }
+            });
         }
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', () => {
-            // İlk verileri çek
-            Object.keys(coinIds).forEach(symbol => {
-                fetchCoinData(symbol);
-            });
-            
+            fetchCryptoData();
             // Her 30 saniyede bir güncelle
-            setInterval(() => {
-                Object.keys(coinIds).forEach(symbol => {
-                    fetchCoinData(symbol);
-                });
-            }, 30000);
+            setInterval(fetchCryptoData, 30000);
+            
+            // RSS beslemelerini çek
+            fetchCryptoNews();
+            // Her 5 dakikada bir haberleri güncelle
+            setInterval(fetchCryptoNews, 300000);
         });
 
         // E-posta gönderimi için fonksiyon

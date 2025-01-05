@@ -643,6 +643,50 @@
                 }
             }
         };
+
+        function createChart(coinId) {
+            const ctx = document.getElementById(`${coinId}Chart`).getContext('2d');
+            const data = cryptoData[coinId].sparkline_in_7d.price;
+            const isPositive = cryptoData[coinId].change >= 0;
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array(24).fill(''),
+                    datasets: [{
+                        data: data,
+                        borderColor: isPositive ? '#14F195' : '#ff4747',
+                        borderWidth: 2,
+                        fill: true,
+                        backgroundColor: isPositive 
+                            ? 'rgba(20, 241, 149, 0.1)'
+                            : 'rgba(255, 71, 71, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    },
+                    interaction: {
+                        intersect: false
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>

@@ -945,8 +945,7 @@
 
         // Grafik oluşturma fonksiyonu
         function createChart(canvas, data) {
-            const ctx = canvas.getContext('2d');
-            return new Chart(ctx, {
+            return new Chart(canvas.getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: Array(24).fill(''),
@@ -964,20 +963,12 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: false
-                        }
+                        legend: { display: false },
+                        tooltip: { enabled: false }
                     },
                     scales: {
-                        x: {
-                            display: false
-                        },
-                        y: {
-                            display: false
-                        }
+                        x: { display: false },
+                        y: { display: false }
                     }
                 }
             });
@@ -1027,19 +1018,24 @@
                     changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
                     changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
                 }
-
-                if (canvas && !canvas.chart) {
-                    canvas.chart = createChart(canvas, Array(24).fill(cryptoData[symbol].price));
-                }
             }
         }
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', () => {
-            // İlk verileri çek
-            fetchCryptoData();
+            const coins = ['BTC', 'ETH', 'SOL', 'BNB', 'XRP'];
             
-            // Her 30 saniyede bir güncelle
+            coins.forEach(coin => {
+                const card = document.querySelector(`[data-coin="${coin}"]`);
+                if (card) {
+                    const canvas = card.querySelector('canvas');
+                    if (canvas) {
+                        createChart(canvas, Array(24).fill(0));
+                    }
+                }
+            });
+
+            fetchCryptoData();
             setInterval(fetchCryptoData, 30000);
         });
 

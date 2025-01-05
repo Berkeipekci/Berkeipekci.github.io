@@ -920,7 +920,7 @@
         }
 
         // Kripto para verileri için başlangıç değerleri
-        let cryptoData = {
+        const cryptoData = {
             'bitcoin': {
                 name: 'Bitcoin',
                 symbol: 'BTC',
@@ -966,8 +966,7 @@
         // Coin kartlarını oluştur
         document.addEventListener('DOMContentLoaded', () => {
             const coinGrid = document.querySelector('.coin-grid');
-            if (!coinGrid) return;
-
+            
             Object.entries(cryptoData).forEach(([id, coin]) => {
                 const card = document.createElement('div');
                 card.className = 'coin-card';
@@ -992,6 +991,32 @@
                     </div>
                 `;
                 coinGrid.appendChild(card);
+                
+                // Grafik oluşturma
+                const ctx = document.getElementById(`${id}Chart`).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array(24).fill(''),
+                        datasets: [{
+                            data: coin.sparkline_in_7d.price,
+                            borderColor: coin.change >= 0 ? '#14F195' : '#ff4747',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { display: false },
+                            y: { display: false }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
             });
         });
 

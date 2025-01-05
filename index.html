@@ -882,8 +882,10 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            color: var(--text);
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
         }
 
         .quiz-option:hover {
@@ -905,6 +907,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 2rem;
         }
 
         .quiz-score {
@@ -921,6 +924,55 @@
                 opacity: 1;
                 transform: translateX(0);
             }
+        }
+
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .quiz-modal.active {
+            opacity: 1;
+        }
+
+        .quiz-modal-content {
+            position: relative;
+            background: var(--surface);
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+
+        .quiz-modal.active .quiz-modal-content {
+            transform: translateY(0);
+        }
+
+        .close-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: var(--primary);
         }
     </style>
 </head>
@@ -940,7 +992,7 @@
                 <a href="#markets" class="nav-link">Piyasalar</a>
                 <a href="#news" class="nav-link">Haberler</a>
                 <a href="#contact" class="nav-link">İletişim</a>
-                <a href="#quiz" class="nav-link">Test</a>
+                <a href="#" class="nav-link" onclick="quizModalAc(event)">Test</a>
             </div>
         </div>
     </nav>
@@ -1315,7 +1367,7 @@
                         <li><a href="#markets">Piyasalar</a></li>
                         <li><a href="#news">Haberler</a></li>
                         <li><a href="#contact">İletişim</a></li>
-                        <li><a href="#quiz">Test</a></li>
+                        <li><a href="#" onclick="quizModalAc(event)">Test</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -1344,9 +1396,7 @@
                     </div>
                     <div class="quiz-content">
                         <h3 class="quiz-question">Soru yükleniyor...</h3>
-                        <div class="quiz-options">
-                            <!-- Seçenekler JavaScript ile doldurulacak -->
-                        </div>
+                        <div class="quiz-options"></div>
                     </div>
                     <div class="quiz-controls">
                         <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
@@ -1356,6 +1406,29 @@
             </div>
         </div>
     </section>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="quiz-modal">
+        <div class="quiz-modal-content">
+            <span class="close-button" onclick="quizModalKapat()">&times;</span>
+            <h2 class="section-title">Bilgilerinizi Test Edin</h2>
+            <div class="quiz-container">
+                <div class="quiz-card fade-in">
+                    <div class="quiz-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="quiz-content">
+                        <h3 class="quiz-question">Soru yükleniyor...</h3>
+                        <div class="quiz-options"></div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
+                        <div class="quiz-score">Puan: <span>0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Coin verileri güncellendi
@@ -2129,6 +2202,51 @@
 
         // Quiz'i başlat
         document.addEventListener('DOMContentLoaded', quizBaslat);
+
+        // Quiz Modal Açma ve Kapama Fonksiyonları
+        function quizModalAc(event) {
+            event.preventDefault();
+            const modal = document.getElementById('quizModal');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+            quizBaslat();
+        }
+
+        function quizModalKapat() {
+            const modal = document.getElementById('quizModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                // Quiz'i sıfırla
+                mevcutSoru = 0;
+                puan = 0;
+                const quizCard = document.querySelector('.quiz-card');
+                quizCard.innerHTML = `
+                    <div class="quiz-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="quiz-content">
+                        <h3 class="quiz-question">Soru yükleniyor...</h3>
+                        <div class="quiz-options"></div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
+                        <div class="quiz-score">Puan: <span>0</span></div>
+                    </div>
+                `;
+            }, 300);
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            const modal = document.getElementById('quizModal');
+            if (event.target == modal) {
+                quizModalKapat();
+            }
+        }
     </script>
 </body>
 </html>
+

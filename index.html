@@ -1218,7 +1218,7 @@
         });
 
         // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Önce grafikleri oluştur
             Object.keys(cryptoData).forEach(coin => {
                 createChart(coin);

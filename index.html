@@ -1303,34 +1303,37 @@
 
         async function haberleriFeeddenCek() {
             try {
-                const rssKaynaklar = [
-                    'https://www.kriptokoin.com/feed/',
-                    'https://uzmancoin.com/feed/',
-                    'https://kriptoparahaber.com/feed/'
+                // Türkçe kripto haber kaynakları
+                const turkceRssKaynaklar = [
+                    'https://www.coinkolik.com/feed/',
+                    'https://kriptokoin.com/feed/',
+                    'https://www.btchaber.com/feed/'
                 ];
 
-                let haberler = [];
-                
-                for (const kaynak of rssKaynaklar) {
+                const API_KEY = 'whhza1h2fziyj84nfyl66kfqg3lg6y165gtqo0ho';
+                let tumHaberler = [];
+
+                for (const kaynak of turkceRssKaynaklar) {
                     try {
-                        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(kaynak)}`);
+                        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(kaynak)}&api_key=${API_KEY}`);
                         const data = await response.json();
-                        
+
                         if (data.status === 'ok') {
-                            const kaynakHaberleri = data.items.slice(0, 5).map(item => ({
+                            const kaynakHaberler = data.items.slice(0, 5).map(item => ({
                                 baslik: item.title,
                                 aciklama: item.description.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
                                 resim: item.thumbnail || item.enclosure?.link || 'varsayilan-haber-resmi.jpg',
                                 tarih: new Date(item.pubDate).toLocaleString('tr-TR', {
                                     day: 'numeric',
                                     month: 'long',
+                                    year: 'numeric',
                                     hour: '2-digit',
                                     minute: '2-digit'
                                 }),
-                                etiket: belirleHaberEtiketi(item.title),
-                                link: item.link
+                                link: item.link,
+                                etiket: belirleHaberEtiketi(item.title)
                             }));
-                            haberler = [...haberler, ...kaynakHaberleri];
+                            tumHaberler = [...tumHaberler, ...kaynakHaberler];
                         }
                     } catch (hata) {
                         console.error(`${kaynak} için hata:`, hata);
@@ -1338,9 +1341,10 @@
                 }
 
                 // Haberleri tarihe göre sırala ve en yeni 10 haberi döndür
-                return haberler
+                return tumHaberler
                     .sort((a, b) => new Date(b.tarih) - new Date(a.tarih))
                     .slice(0, 10);
+
             } catch (hata) {
                 console.error('Haber çekme hatası:', hata);
                 return [];

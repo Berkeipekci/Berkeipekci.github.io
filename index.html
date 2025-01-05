@@ -28,6 +28,7 @@
 </head>
 <body>
     <!-- Sayfa içeriği aynı kalacak -->
+    <canvas id="btcChart"></canvas>
     <script>
         // Script içeriği güncellendi
         document.addEventListener('DOMContentLoaded', () => {
@@ -35,92 +36,52 @@
             const charts = {};
             
             async function fetchCoinData(coinId) {
-                try {
-                    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-                    if (!response.ok) throw new Error('API yanıt vermedi');
-                    const data = await response.json();
-                    return {
-                        name: data.name,
-                        price: data.market_data.current_price.usd,
-                        change: data.market_data.price_change_percentage_24h,
-                        history: data.market_data.sparkline_7d.price
-                    };
-                } catch (error) {
-                    console.error(`${coinId} için veri alınamadı:`, error);
-                    return null;
-                }
+                const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+                const data = await response.json();
+                return {
+                    name: data.name,
+                    price: data.market_data.current_price.usd,
+                    change: data.market_data.price_change_percentage_24h,
+                    history: data.market_data.sparkline_7d.price
+                };
             }
 
             function createChart(canvasId) {
                 const canvas = document.getElementById(canvasId);
                 if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
-                    console.error(`${canvasId} için canvas bulunamadı`);
+                    console.error(`Canvas element with ID ${canvasId} not found or is not a valid canvas.`);
                     return null;
                 }
                 const ctx = canvas.getContext('2d');
                 return new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: [],
+                        labels: [], // X ekseni için örnek etiketler
                         datasets: [{
                             label: 'Fiyat',
-                            data: [],
+                            data: [], // Veri seti
                             borderColor: 'rgba(153, 69, 255, 0.5)',
                             fill: false
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            intersect: false,
-                            mode: 'index'
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: true
-                            }
-                        },
-                        scales: {
-                            x: {
-                                display: false
-                            },
-                            y: {
-                                display: false
-                            }
-                        }
+                        maintainAspectRatio: false
                     }
                 });
             }
 
-            // Coin verilerini güncelleme
-            async function updateCoinData() {
-                const coins = ['bitcoin', 'ethereum', 'solana', 'binancecoin', 'ripple', 'cardano', 'dogecoin', 'polkadot', 'chainlink', 'matic-network'];
-                
-                for (const coin of coins) {
-                    const data = await fetchCoinData(coin);
-                    if (data) {
-                        const chartId = `${coin}Chart`;
-                        if (!charts[chartId]) {
-                            charts[chartId] = createChart(chartId);
-                        }
-                        if (charts[chartId]) {
-                            charts[chartId].data.labels = data.history.map((_, i) => i);
-                            charts[chartId].data.datasets[0].data = data.history;
-                            charts[chartId].update();
-                        }
-                    }
-                }
+            function updateChart(chart, data) {
+                chart.data.labels = data.history.map((_, index) => index); // X ekseni için örnek etiketler
+                chart.data.datasets[0].data = data.history;
+                chart.update();
             }
 
-            // İlk yükleme
-            updateCoinData();
-            
-            // Her 5 dakikada bir güncelle
-            setInterval(updateCoinData, 300000);
+            // Örnek kullanım
+            const btcChart = createChart('btcChart');
+            fetchCoinData('bitcoin').then(coinData => {
+                updateChart(btcChart, coinData);
+            });
         });
     </script>
 </body>

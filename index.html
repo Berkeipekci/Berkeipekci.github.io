@@ -726,7 +726,7 @@
             border: 1px solid rgba(153, 69, 255, 0.2);
             transition: all 0.3s ease;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
         }
 
         .education-card.visible {
@@ -765,32 +765,26 @@
 
         .education-item {
             margin-bottom: 1.5rem;
-            padding-left: 1rem;
-            border-left: 2px solid var(--primary);
-            animation: slideIn 0.5s ease-out forwards;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(153, 69, 255, 0.1);
             opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         .education-item h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
             color: var(--text);
+            margin-bottom: 0.5rem;
         }
 
         .education-item p {
             color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            font-size: 0.9rem;
         }
 
         .newsletter-form {
@@ -833,6 +827,101 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(153, 69, 255, 0.3);
         }
+
+        .quiz-section {
+            padding: 4rem 0;
+            background: var(--surface);
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .quiz-card {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(153, 69, 255, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .quiz-option.correct {
+            background: rgba(20, 241, 149, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.wrong {
+            background: rgba(255, 71, 71, 0.1);
+            border-color: #ff4747;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-score {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -851,6 +940,7 @@
                 <a href="#markets" class="nav-link">Piyasalar</a>
                 <a href="#news" class="nav-link">Haberler</a>
                 <a href="#contact" class="nav-link">İletişim</a>
+                <a href="#quiz" class="nav-link">Test</a>
             </div>
         </div>
     </nav>
@@ -1071,6 +1161,80 @@
         </div>
     </section>
 
+    <!-- Education Section -->
+    <section id="education" class="education-section">
+        <div class="container">
+            <h2 class="section-title">Kripto Para Eğitimi</h2>
+            <div class="education-grid">
+                <!-- Temel Seviye -->
+                <div class="education-card beginner">
+                    <div class="education-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Temel Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Blockchain Nedir?</h4>
+                            <p>Blockchain teknolojisinin temelleri ve çalışma prensipleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Kripto Para Nedir?</h4>
+                            <p>Kripto paraların tanımı, özellikleri ve kullanım alanları.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Cüzdan Güvenliği</h4>
+                            <p>Kripto para cüzdanları ve güvenlik önlemleri.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orta Seviye -->
+                <div class="education-card intermediate">
+                    <div class="education-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Orta Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Teknik Analiz</h4>
+                            <p>Grafik okuma ve temel teknik analiz yöntemleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>DeFi Sistemleri</h4>
+                            <p>Merkeziyetsiz finans sistemleri ve protokolleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Trading Stratejileri</h4>
+                            <p>Temel alım-satım stratejileri ve risk yönetimi.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İleri Seviye -->
+                <div class="education-card advanced">
+                    <div class="education-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>İleri Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Smart Contracts</h4>
+                            <p>Akıllı kontratların çalışma mantığı ve uygulamaları.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Tokenomics</h4>
+                            <p>Token ekonomisi ve değerleme yöntemleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>DAO Yapıları</h4>
+                            <p>Merkeziyetsiz otonom organizasyonlar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- News Section -->
     <section id="news" class="news-section">
         <div class="container">
@@ -1127,68 +1291,6 @@
         </div>
     </section>
 
-    <!-- Eğitim Bölümü -->
-    <section id="education" class="education-section">
-        <div class="container">
-            <h2 class="section-title">Kripto Para Eğitimi</h2>
-            <div class="education-grid">
-                <!-- Temel Seviye -->
-                <div class="education-card beginner">
-                    <div class="education-icon">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <h3>Temel Seviye</h3>
-                    <div class="education-content">
-                        <div class="education-item">
-                            <h4>Kripto Para Nedir?</h4>
-                            <p>Kripto paralar, dijital veya sanal para birimleridir. Güvenliği sağlamak için kriptografi kullanır.</p>
-                        </div>
-                        <div class="education-item">
-                            <h4>Blockchain Teknolojisi</h4>
-                            <p>Blockchain, tüm işlemlerin şeffaf ve değiştirilemez şekilde kaydedildiği dijital bir defterdir.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Orta Seviye -->
-                <div class="education-card intermediate">
-                    <div class="education-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Orta Seviye</h3>
-                    <div class="education-content">
-                        <div class="education-item">
-                            <h4>Trading Temelleri</h4>
-                            <p>Temel ve teknik analiz yöntemleri, risk yönetimi ve trading stratejileri.</p>
-                        </div>
-                        <div class="education-item">
-                            <h4>DeFi (Merkeziyetsiz Finans)</h4>
-                            <p>Geleneksel finansal hizmetlerin blockchain üzerinde merkeziyetsiz sunulması.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- İleri Seviye -->
-                <div class="education-card advanced">
-                    <div class="education-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>İleri Seviye</h3>
-                    <div class="education-content">
-                        <div class="education-item">
-                            <h4>Akıllı Kontratlar</h4>
-                            <p>Ethereum ve diğer platformlarda çalışan otomatik yürütülen dijital sözleşmeler.</p>
-                        </div>
-                        <div class="education-item">
-                            <h4>NFT ve Metaverse</h4>
-                            <p>Dijital varlıkların benzersizliği ve sanal dünyaların geleceği.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -1213,6 +1315,7 @@
                         <li><a href="#markets">Piyasalar</a></li>
                         <li><a href="#news">Haberler</a></li>
                         <li><a href="#contact">İletişim</a></li>
+                        <li><a href="#quiz">Test</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -1229,6 +1332,30 @@
             </div>
         </div>
     </footer>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="quiz-section">
+        <div class="container">
+            <h2 class="section-title">Bilgilerinizi Test Edin</h2>
+            <div class="quiz-container">
+                <div class="quiz-card fade-in">
+                    <div class="quiz-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="quiz-content">
+                        <h3 class="quiz-question">Soru yükleniyor...</h3>
+                        <div class="quiz-options">
+                            <!-- Seçenekler JavaScript ile doldurulacak -->
+                        </div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
+                        <div class="quiz-score">Puan: <span>0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script>
         // Coin verileri güncellendi
@@ -1356,37 +1483,52 @@
         }
 
         // E-posta gönderimi için fonksiyon
-        function sendEmail(event) {
+        async function sendEmail(event) {
             event.preventDefault();
             
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
+            const submitButton = event.target.querySelector('button');
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+                
+                await emailjs.send(
+                    "service_mnldaov",
+                    "template_ucqyb9l",
+                    {
+                        from_name: name,
+                        from_email: email,
+                        message: message,
+                        to_email: "berke.ipekci@gmail.com"
+                    }
+                );
 
-            // Email.js servisini kullanarak e-posta gönderimi
-            Email.send({
-                SecureToken: "YOUR_EMAILJS_SECURE_TOKEN", // EmailJS'den alınacak token
-                To: 'berke.ipekci@gmail.com',
-                From: email,
-                Subject: `KriptoEkosistem - Yeni İletişim Formu: ${name}`,
-                Body: `
-                    <h3>Yeni İletişim Formu Mesajı</h3>
-                    <p><strong>Gönderen:</strong> ${name}</p>
-                    <p><strong>E-posta:</strong> ${email}</p>
-                    <p><strong>Mesaj:</strong></p>
-                    <p>${message}</p>
-                `
-            }).then(
-                message => {
-                    alert('Mesajınız başarıyla gönderildi!');
-                    document.getElementById('contactForm').reset();
-                }
-            ).catch(
-                error => {
-                    console.error('E-posta gönderimi sırasında hata:', error);
-                    alert('Mesaj gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
-                }
-            );
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: 'Mesajınız başarıyla gönderildi.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+                event.target.reset();
+
+            } catch (error) {
+                console.error('Mesaj gönderme hatası:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Mesaj gönderilirken bir hata oluştu.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Gönder';
+            }
 
             return false;
         }
@@ -1903,6 +2045,90 @@
         document.querySelectorAll('.education-card').forEach(card => {
             educationObserver.observe(card);
         });
+
+        // Quiz soruları
+        const quizSorulari = [
+            {
+                soru: "Bitcoin'in yaratıcısı kimdir?",
+                secenekler: ["Satoshi Nakamoto", "Vitalik Buterin", "Charlie Lee", "Roger Ver"],
+                dogruCevap: 0
+            },
+            {
+                soru: "Ethereum'un ana özelliği nedir?",
+                secenekler: ["Akıllı Kontratlar", "Hızlı İşlemler", "Gizlilik", "Madencilik"],
+                dogruCevap: 0
+            },
+            {
+                soru: "Blockchain teknolojisinin temel özelliği nedir?",
+                secenekler: ["Merkeziyetsizlik", "Hız", "Düşük Maliyet", "Anonimlik"],
+                dogruCevap: 0
+            }
+            // Daha fazla soru eklenebilir
+        ];
+
+        let mevcutSoru = 0;
+        let puan = 0;
+
+        function quizBaslat() {
+            const quizCard = document.querySelector('.quiz-card');
+            const soruElement = document.querySelector('.quiz-question');
+            const seceneklerElement = document.querySelector('.quiz-options');
+            const sonrakiButton = document.querySelector('.quiz-next');
+            const puanElement = document.querySelector('.quiz-score span');
+            const progressBar = document.querySelector('.progress-bar');
+
+            function soruGoster() {
+                const soru = quizSorulari[mevcutSoru];
+                soruElement.textContent = soru.soru;
+                seceneklerElement.innerHTML = '';
+                progressBar.style.width = `${(mevcutSoru / quizSorulari.length) * 100}%`;
+
+                soru.secenekler.forEach((secenek, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'quiz-option';
+                    button.textContent = secenek;
+                    button.style.animation = `slideIn 0.5s ease ${index * 0.1}s forwards`;
+                    button.onclick = () => cevapKontrol(index);
+                    seceneklerElement.appendChild(button);
+                });
+
+                sonrakiButton.disabled = true;
+            }
+
+            function cevapKontrol(secilenIndex) {
+                const secenekler = document.querySelectorAll('.quiz-option');
+                secenekler.forEach(secenek => secenek.onclick = null);
+
+                if (secilenIndex === quizSorulari[mevcutSoru].dogruCevap) {
+                    secenekler[secilenIndex].classList.add('correct');
+                    puan += 10;
+                    puanElement.textContent = puan;
+                } else {
+                    secenekler[secilenIndex].classList.add('wrong');
+                    secenekler[quizSorulari[mevcutSoru].dogruCevap].classList.add('correct');
+                }
+
+                sonrakiButton.disabled = false;
+            }
+
+            sonrakiButton.onclick = () => {
+                mevcutSoru++;
+                if (mevcutSoru < quizSorulari.length) {
+                    soruGoster();
+                } else {
+                    quizCard.innerHTML = `
+                        <h3>Test Tamamlandı!</h3>
+                        <p>Toplam Puanınız: ${puan}</p>
+                        <button class="btn-primary" onclick="location.reload()">Tekrar Dene</button>
+                    `;
+                }
+            };
+
+            soruGoster();
+        }
+
+        // Quiz'i başlat
+        document.addEventListener('DOMContentLoaded', quizBaslat);
     </script>
 </body>
 </html>

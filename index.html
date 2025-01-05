@@ -610,6 +610,40 @@
             transform: translateY(0);
         }
     </style>
+    <script>
+        const cryptoData = {
+            'bitcoin': {
+                name: 'Bitcoin',
+                symbol: 'BTC',
+                price: 65000,
+                change: 2.5,
+                image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 1000 + 64000)
+                }
+            },
+            'ethereum': {
+                name: 'Ethereum',
+                symbol: 'ETH',
+                price: 3500,
+                change: -1.2,
+                image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 100 + 3450)
+                }
+            },
+            'solana': {
+                name: 'Solana',
+                symbol: 'SOL',
+                price: 125,
+                change: 5.8,
+                image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 10 + 120)
+                }
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="geometric-background">

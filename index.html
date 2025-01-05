@@ -633,9 +633,9 @@
     </section>
 
     <!-- Market Stats Section -->
-    <section id="markets" class="market-stats">
+    <section id="markets" class="market-stats section-animate">
         <div class="container">
-            <h2 class="section-title">En Popüler 10 Kripto Para</h2>
+            <h2 class="section-title">Piyasa İstatistikleri</h2>
             <div class="coin-grid">
                 <!-- Bitcoin -->
                 <div class="coin-card" data-coin="BTC">
@@ -653,7 +653,7 @@
                         </div>
                     </div>
                     <div class="chart-container">
-                        <canvas></canvas>
+                        <canvas id="btcChart"></canvas>
                     </div>
                 </div>
 
@@ -943,6 +943,46 @@
             XRP: { price: 0, change: 0, chartData: [] }
         };
 
+        // Grafik oluşturma fonksiyonu
+        function createChart(canvas, data) {
+            const ctx = canvas.getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array(24).fill(''),
+                    datasets: [{
+                        data: data,
+                        borderColor: '#14F195',
+                        borderWidth: 2,
+                        fill: true,
+                        backgroundColor: 'rgba(20, 241, 149, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
         // CoinGecko API'den verileri çek
         async function fetchCryptoData() {
             try {
@@ -960,39 +1000,38 @@
                 Object.keys(coinMapping).forEach(symbol => {
                     const geckoId = coinMapping[symbol];
                     if (data[geckoId]) {
-                        cryptoData[symbol] = {
-                            price: data[geckoId].usd,
-                            change: data[geckoId].usd_24h_change,
-                            chartData: cryptoData[symbol].chartData
-                        };
+                        cryptoData[symbol].price = data[geckoId].usd;
+                        cryptoData[symbol].change = data[geckoId].usd_24h_change;
+                        updateUI(symbol);
                     }
                 });
-
-                updateUI();
             } catch (error) {
                 console.error('Veri çekme hatası:', error);
             }
         }
 
         // UI'ı güncelle
-        function updateUI() {
-            Object.keys(cryptoData).forEach(symbol => {
-                const card = document.querySelector(`[data-coin="${symbol}"]`);
-                if (card) {
-                    const priceElement = card.querySelector('.current-price');
-                    const changeElement = card.querySelector('.price-change');
-                    
-                    if (priceElement) {
-                        priceElement.textContent = `$${cryptoData[symbol].price.toLocaleString('tr-TR')}`;
-                    }
-                    
-                    if (changeElement) {
-                        const change = cryptoData[symbol].change;
-                        changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-                        changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
-                    }
+        function updateUI(symbol) {
+            const card = document.querySelector(`[data-coin="${symbol}"]`);
+            if (card) {
+                const priceElement = card.querySelector('.current-price');
+                const changeElement = card.querySelector('.price-change');
+                const canvas = card.querySelector('canvas');
+                
+                if (priceElement) {
+                    priceElement.textContent = `$${cryptoData[symbol].price.toLocaleString('tr-TR')}`;
                 }
-            });
+                
+                if (changeElement) {
+                    const change = cryptoData[symbol].change;
+                    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+                    changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+                }
+
+                if (canvas && !canvas.chart) {
+                    canvas.chart = createChart(canvas, Array(24).fill(cryptoData[symbol].price));
+                }
+            }
         }
 
         // Sayfa yüklendiğinde

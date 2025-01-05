@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <link rel="icon" href="path/to/favicon.ico" type="image/x-icon">
     <style>
 
 
@@ -1136,51 +1137,31 @@
         };
 
         // Grafik oluşturma fonksiyonu güncellendi
-        function createChart(coinSymbol) {
-            const ctx = document.getElementById(`${coinSymbol.toLowerCase()}Chart`).getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-            const data = cryptoData[coinSymbol];
-            
-            gradient.addColorStop(0, `${data.color}33`);
-            gradient.addColorStop(1, `${data.color}00`);
-
+        function createChart(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
+                console.error(`Canvas element with ID ${canvasId} not found or is not a valid canvas.`);
+                return null;
+            }
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('Failed to get 2D context for canvas.');
+                return null;
+            }
             return new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['5s', '4s', '3s', '2s', '1s', 'Şimdi'],
+                    labels: [], // X ekseni etiketleri
                     datasets: [{
-                        label: coinSymbol,
-                        data: data.history,
-                        borderColor: data.color,
-                        borderWidth: 2,
-                        fill: true,
-                        backgroundColor: gradient,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 4,
-                        pointHoverBackgroundColor: data.color
+                        label: 'Fiyat',
+                        data: [], // Veri seti
+                        borderColor: 'rgba(153, 69, 255, 0.5)',
+                        fill: false
                     }]
                 },
                 options: {
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            display: false
-                        },
-                        y: {
-                            display: false
-                        }
-                    },
                     responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    }
+                    maintainAspectRatio: false
                 }
             });
         }
@@ -1429,7 +1410,7 @@
         }
 
         // Örnek kullanım
-        const btcChart = createChart('btcChart'); // createChart fonksiyonu daha önce tanımlanmış olmalı
+        const btcChart = createChart('btcChart');
         fetchCoinData('bitcoin').then(coinData => {
             updateChart(btcChart, coinData);
         });

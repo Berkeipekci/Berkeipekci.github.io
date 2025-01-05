@@ -876,21 +876,20 @@
         }
 
         .quiz-option {
+            width: 100%;
             padding: 1rem;
-            background: var(--surface);
+            margin-bottom: 1rem;
+            background: var(--surface-light);
             border: 1px solid rgba(153, 69, 255, 0.2);
             border-radius: 8px;
+            color: var(--text);
             cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--text);
-            width: 100%;
-            text-align: left;
-            font-size: 1rem;
         }
 
         .quiz-option:hover {
-            transform: translateY(-2px);
             border-color: var(--primary);
+            transform: translateX(10px);
         }
 
         .quiz-option.correct {
@@ -974,7 +973,50 @@
         .close-button:hover {
             color: var(--primary);
         }
+
+        .quiz-container {
+            margin-top: 2rem;
+        }
+
+        .quiz-option {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
     </style>
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="quiz-modal">
+        <div class="quiz-modal-content">
+            <span class="close-button" onclick="quizModalKapat()">&times;</span>
+            <h2 class="section-title">Bilgilerinizi Test Edin</h2>
+            <div class="quiz-container">
+                <div class="quiz-card fade-in">
+                    <div class="quiz-progress">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="quiz-content">
+                        <h3 class="quiz-question">Soru yükleniyor...</h3>
+                        <div class="quiz-options"></div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
+                        <div class="quiz-score">Puan: <span>0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </head>
 <body>
     <div class="geometric-background">
@@ -1406,29 +1448,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Quiz Modal -->
-    <div id="quizModal" class="quiz-modal">
-        <div class="quiz-modal-content">
-            <span class="close-button" onclick="quizModalKapat()">&times;</span>
-            <h2 class="section-title">Bilgilerinizi Test Edin</h2>
-            <div class="quiz-container">
-                <div class="quiz-card fade-in">
-                    <div class="quiz-progress">
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="quiz-content">
-                        <h3 class="quiz-question">Soru yükleniyor...</h3>
-                        <div class="quiz-options"></div>
-                    </div>
-                    <div class="quiz-controls">
-                        <button class="btn-primary quiz-next" disabled>Sonraki Soru</button>
-                        <div class="quiz-score">Puan: <span>0</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Coin verileri güncellendi
@@ -2249,4 +2268,3 @@
     </script>
 </body>
 </html>
-

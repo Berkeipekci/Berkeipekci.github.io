@@ -638,7 +638,7 @@
             <h2 class="section-title">En Popüler 10 Kripto Para</h2>
             <div class="coin-grid">
                 <!-- Bitcoin -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="BTC">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" class="coin-icon">
@@ -658,7 +658,7 @@
                 </div>
 
                 <!-- Ethereum -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="ETH">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="coin-icon">
@@ -679,7 +679,7 @@
 
                 <!-- Diğer 8 coin için benzer kartlar -->
                 <!-- BNB -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="BNB">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" class="coin-icon">
@@ -699,7 +699,7 @@
                 </div>
 
                 <!-- Solana -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="SOL">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" class="coin-icon">
@@ -719,7 +719,7 @@
                 </div>
 
                 <!-- XRP -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="XRP">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" alt="XRP" class="coin-icon">
@@ -738,7 +738,7 @@
                     </div>
                 </div>
                 <!-- Cardano -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="ADA">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/cardano-ada-logo.png" alt="Cardano" class="coin-icon">
@@ -758,7 +758,7 @@
                 </div>
 
                 <!-- Dogecoin -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="DOGE">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" alt="Dogecoin" class="coin-icon">
@@ -778,7 +778,7 @@
                 </div>
 
                 <!-- Polygon -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="MATIC">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon" class="coin-icon">
@@ -798,7 +798,7 @@
                 </div>
 
                 <!-- Polkadot -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="DOT">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/polkadot-new-dot-logo.png" alt="Polkadot" class="coin-icon">
@@ -818,7 +818,7 @@
                 </div>
 
                 <!-- Chainlink -->
-                <div class="coin-card">
+                <div class="coin-card" data-coin="LINK">
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="https://cryptologos.cc/logos/chainlink-link-logo.png" alt="Chainlink" class="coin-icon">
@@ -1061,129 +1061,94 @@
     </footer>
 
     <script>
-        // Coin verileri güncellendi
-        const cryptoData = {
-            BTC: {
-                name: 'Bitcoin',
-                price: 98161.42,
-                change: 0.03,
-                color: '#F7931A', // Bitcoin turuncu
-                history: [95000, 96000, 97000, 97500, 98000, 98161]
-            },
-            ETH: {
-                name: 'Ethereum',
-                price: 3637.08,
-                change: 1.15,
-                color: '#627EEA', // Ethereum mavi
-                history: [3400, 3450, 3500, 3550, 3600, 3637]
-            },
-            SOL: {
-                name: 'Solana',
-                price: 216.83,
-                change: 0.32,
-                color: '#00FFA3', // Solana yeşil
-                history: [190, 195, 200, 210, 215, 216.83]
-            },
-            BNB: {
-                name: 'BNB',
-                price: 711.94,
-                change: 1.27,
-                color: '#F3BA2F', // BNB sarı
-                history: [700, 705, 708, 710, 711, 711.94]
-            },
-            XRP: {
-                name: 'XRP',
-                price: 2.39,
-                change: 3.29,
-                color: '#23292F', // XRP siyah
-                history: [2.20, 2.25, 2.30, 2.35, 2.37, 2.39]
-            },
-            ADA: {
-                name: 'Cardano',
-                price: 1.06,
-                change: 3.47,
-                color: '#0033AD', // Cardano mavi
-                history: [0.90, 0.95, 1.00, 1.03, 1.05, 1.06]
-            },
-            DOGE: {
-                name: 'Dogecoin',
-                price: 0.3888,
-                change: 0.17,
-                color: '#C2A633', // Dogecoin altın
-                history: [0.35, 0.36, 0.37, 0.38, 0.385, 0.3888]
-            },
-            DOT: {
-                name: 'Polkadot',
-                price: 7.62,
-                change: -0.5,
-                color: '#E6007A', // Polkadot pembe
-                history: [7.70, 7.68, 7.66, 7.64, 7.63, 7.62]
-            },
-            LINK: {
-                name: 'Chainlink',
-                price: 23.32,
-                change: 4.1,
-                color: '#2A5ADA', // Chainlink mavi
-                history: [22.00, 22.40, 22.80, 23.00, 23.20, 23.32]
-            },
-            MATIC: {
-                name: 'Polygon',
-                price: 0.52,
-                change: -0.45,
-                color: '#8247E5', // Polygon mor
-                history: [0.54, 0.53, 0.525, 0.522, 0.521, 0.52]
-            }
+        // CoinGecko API entegrasyonu
+        const coinIds = {
+            BTC: 'bitcoin',
+            ETH: 'ethereum',
+            SOL: 'solana',
+            BNB: 'binancecoin',
+            XRP: 'ripple',
+            ADA: 'cardano',
+            DOGE: 'dogecoin',
+            DOT: 'polkadot',
+            LINK: 'chainlink',
+            MATIC: 'matic-network'
         };
 
-        // Grafik oluşturma fonksiyonu güncellendi
-        function createChart(coinSymbol) {
-            const ctx = document.getElementById(`${coinSymbol.toLowerCase()}Chart`).getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-            const data = cryptoData[coinSymbol];
-            
-            gradient.addColorStop(0, `${data.color}33`);
-            gradient.addColorStop(1, `${data.color}00`);
+        let charts = {};
 
+        // Coin verilerini çekme fonksiyonu
+        async function fetchCoinData() {
+            try {
+                const ids = Object.values(coinIds).join(',');
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+                const data = await response.json();
+                
+                Object.entries(coinIds).forEach(([symbol, id]) => {
+                    if (data[id]) {
+                        updateCoinCard(symbol, data[id].usd, data[id].usd_24h_change);
+                    }
+                });
+            } catch (error) {
+                console.error('Veri çekme hatası:', error);
+            }
+        }
+
+        // Coin kartını güncelleme fonksiyonu
+        function updateCoinCard(symbol, price, change) {
+            const card = document.querySelector(`[data-coin="${symbol}"]`);
+            if (card) {
+                const priceElement = card.querySelector('.current-price');
+                const changeElement = card.querySelector('.price-change');
+                
+                priceElement.textContent = `$${price.toLocaleString('tr-TR', {minimumFractionDigits: 2})}`;
+                changeElement.textContent = `${change.toFixed(2)}%`;
+                changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+            }
+        }
+
+        // Grafik oluşturma fonksiyonu
+        function createChart(symbol) {
+            const ctx = document.getElementById(`${symbol.toLowerCase()}Chart`).getContext('2d');
             return new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['5s', '4s', '3s', '2s', '1s', 'Şimdi'],
+                    labels: Array(24).fill(''),
                     datasets: [{
-                        label: coinSymbol,
-                        data: data.history,
-                        borderColor: data.color,
+                        data: [],
+                        borderColor: '#14F195',
                         borderWidth: 2,
-                        fill: true,
-                        backgroundColor: gradient,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 4,
-                        pointHoverBackgroundColor: data.color
+                        fill: false,
+                        tension: 0.4
                     }]
                 },
                 options: {
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            display: false
-                        },
-                        y: {
-                            display: false
-                        }
-                    },
                     responsive: true,
                     maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    },
+                    elements: { point: { radius: 0 } }
                 }
             });
         }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Grafikleri oluştur
+            Object.keys(coinIds).forEach(symbol => {
+                const chart = createChart(symbol);
+                charts[symbol] = chart;
+            });
+            
+            // İlk verileri çek
+            await fetchCoinData();
+            
+            // Her 1 dakikada bir güncelle
+            setInterval(fetchCoinData, 60000);
+        });
 
         // E-posta gönderimi için fonksiyon
         function sendEmail(event) {
@@ -1385,95 +1350,6 @@
                 const offsetY = (y - 0.5) * 20;
                 shape.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             });
-        });
-
-        // CoinGecko API entegrasyonu
-        const coinIds = {
-            BTC: 'bitcoin',
-            ETH: 'ethereum',
-            SOL: 'solana',
-            BNB: 'binancecoin',
-            XRP: 'ripple',
-            ADA: 'cardano',
-            DOGE: 'dogecoin',
-            DOT: 'polkadot',
-            LINK: 'chainlink',
-            MATIC: 'matic-network'
-        };
-
-        let charts = {};
-
-        async function fetchCoinData() {
-            try {
-                const ids = Object.values(coinIds).join(',');
-                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-                const data = await response.json();
-                
-                Object.entries(coinIds).forEach(([symbol, id]) => {
-                    if (data[id]) {
-                        const price = data[id].usd;
-                        const change = data[id].usd_24h_change;
-                        updateCoinCard(symbol, price, change);
-                    }
-                });
-            } catch (error) {
-                console.error('Veri çekme hatası:', error);
-            }
-        }
-
-        async function fetchHistoricalData(symbol) {
-            try {
-                const id = coinIds[symbol];
-                const response = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1&interval=hourly`);
-                const data = await response.json();
-                
-                const prices = data.prices.map(price => price[1]);
-                updateChart(symbol, prices);
-            } catch (error) {
-                console.error('Geçmiş veri çekme hatası:', error);
-            }
-        }
-
-        function updateCoinCard(symbol, price, change) {
-            const card = document.querySelector(`#${symbol.toLowerCase()}Chart`).closest('.coin-card');
-            const priceElement = card.querySelector('.current-price');
-            const changeElement = card.querySelector('.price-change');
-            
-            priceElement.textContent = `$${price.toLocaleString('tr-TR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-            changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
-        }
-
-        function updateChart(symbol, prices) {
-            if (charts[symbol]) {
-                charts[symbol].data.datasets[0].data = prices;
-                charts[symbol].update();
-            }
-        }
-
-        // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', async () => {
-            // İlk grafikleri oluştur
-            Object.keys(coinIds).forEach(symbol => {
-                const chart = createChart(symbol);
-                charts[symbol] = chart;
-            });
-            
-            // İlk verileri çek
-            await fetchCoinData();
-            
-            // Her coin için geçmiş verileri çek
-            Object.keys(coinIds).forEach(symbol => {
-                fetchHistoricalData(symbol);
-            });
-            
-            // Her 1 dakikada bir verileri güncelle
-            setInterval(async () => {
-                await fetchCoinData();
-                Object.keys(coinIds).forEach(symbol => {
-                    fetchHistoricalData(symbol);
-                });
-            }, 60000);
         });
 
         // Haber RSS beslemelerini çekmek için fonksiyon

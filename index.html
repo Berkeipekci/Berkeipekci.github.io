@@ -1405,6 +1405,7 @@
         });
 
         function updateChart(chart, data) {
+            chart.data.labels = data.history.map((_, index) => index); // X ekseni için örnek etiketler
             chart.data.datasets[0].data = data.history;
             chart.update();
         }

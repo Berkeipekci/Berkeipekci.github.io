@@ -640,9 +640,9 @@
     </section>
 
     <!-- Market Stats Section -->
-    <section id="markets" class="market-stats section-animate">
+    <section id="markets" class="market-stats">
         <div class="container">
-            <h2 class="section-title">Popüler Kripto Paralar</h2>
+            <h2 class="section-title">En Popüler Kripto Paralar</h2>
             <div class="coin-grid">
                 <!-- Coin kartları JavaScript ile eklenecek -->
             </div>
@@ -920,66 +920,78 @@
         }
 
         // Kripto para verileri için başlangıç değerleri
-        const cryptoData = {
-            'Bitcoin': {
+        let cryptoData = {
+            'bitcoin': {
+                name: 'Bitcoin',
+                symbol: 'BTC',
                 price: 65000,
                 change: 2.5,
-                symbol: 'BTC',
-                chartData: Array(24).fill(0).map(() => Math.random() * 1000 + 64000)
+                image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 1000 + 64000)
+                }
             },
-            'Ethereum': {
+            'ethereum': {
+                name: 'Ethereum',
+                symbol: 'ETH',
                 price: 3500,
                 change: -1.2,
-                symbol: 'ETH',
-                chartData: Array(24).fill(0).map(() => Math.random() * 100 + 3450)
+                image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 100 + 3450)
+                }
             },
-            'Solana': {
+            'solana': {
+                name: 'Solana',
+                symbol: 'SOL',
                 price: 125,
                 change: 5.8,
-                symbol: 'SOL',
-                chartData: Array(24).fill(0).map(() => Math.random() * 10 + 120)
+                image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 10 + 120)
+                }
             },
-            'Cardano': {
+            'cardano': {
+                name: 'Cardano',
+                symbol: 'ADA',
                 price: 0.65,
                 change: -0.5,
-                symbol: 'ADA',
-                chartData: Array(24).fill(0).map(() => Math.random() * 0.1 + 0.60)
+                image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png',
+                sparkline_in_7d: {
+                    price: Array(24).fill(0).map(() => Math.random() * 0.1 + 0.60)
+                }
             }
         };
 
-        // Sayfa yüklendiğinde başlat
-        document.addEventListener('DOMContentLoaded', async () => {
-            const veriler = await kriptoVerileriniGetir();
+        // Coin kartlarını oluştur
+        document.addEventListener('DOMContentLoaded', () => {
             const coinGrid = document.querySelector('.coin-grid');
-            
-            veriler.forEach((coin, index) => {
-                const kart = document.createElement('div');
-                kart.className = 'coin-card fade-in';
-                kart.style.transitionDelay = `${index * 0.1}s`;
-                
-                kart.innerHTML = `
+            if (!coinGrid) return;
+
+            Object.entries(cryptoData).forEach(([id, coin]) => {
+                const card = document.createElement('div');
+                card.className = 'coin-card';
+                card.innerHTML = `
                     <div class="coin-header">
                         <div class="coin-info">
                             <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
                             <div>
                                 <div class="coin-name">${coin.name}</div>
-                                <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+                                <div class="coin-symbol">${coin.symbol}</div>
                             </div>
                         </div>
                         <div class="coin-price">
-                            <div class="current-price">$${coin.current_price.toLocaleString()}</div>
-                            <div class="price-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-                                ${coin.price_change_percentage_24h.toFixed(2)}%
+                            <div class="current-price">$${coin.price.toFixed(2)}</div>
+                            <div class="price-change ${coin.change >= 0 ? 'positive' : 'negative'}">
+                                ${coin.change >= 0 ? '+' : ''}${coin.change.toFixed(2)}%
                             </div>
                         </div>
                     </div>
                     <div class="chart-container">
-                        <canvas id="${coin.id}Chart"></canvas>
+                        <canvas id="${id}Chart"></canvas>
                     </div>
                 `;
-                
-                coinGrid.appendChild(kart);
-                grafikOlustur(coin, `${coin.id}Chart`);
+                coinGrid.appendChild(card);
             });
         });
 

@@ -1,2141 +1,2133 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kripto Ekosistemi</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://smtpjs.com/v3/smtp.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<style>
-/* Quiz Modal Styles */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kripto Ekosistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Quiz Modal Styles */
 .quiz-modal {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.8);
-backdrop-filter: blur(5px);
-z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
 }
 
 .quiz-modal.active {
-display: block;
+    display: block;
 }
 
 .quiz-modal-content {
-position: relative;
-background: var(--surface);
-width: 90%;
-max-width: 800px;
-margin: 50px auto;
-padding: 2rem;
-border-radius: 16px;
-border: 1px solid rgba(153, 69, 255, 0.2);
+    position: relative;
+    background: var(--surface);
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(153, 69, 255, 0.2);
 }
 
 .close-button {
-position: absolute;
-right: 20px;
-top: 20px;
-font-size: 30px;
-color: var(--text-secondary);
-cursor: pointer;
-transition: color 0.3s ease;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 30px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .close-button:hover {
-color: var(--primary);
+    color: var(--primary);
 }
 
 .quiz-card {
-padding: 1rem;
+    padding: 1rem;
 }
 
 .quiz-question {
-font-size: 1.5rem;
-margin-bottom: 2rem;
-color: var(--text);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text);
 }
 
 .quiz-options {
-display: grid;
-gap: 1rem;
-margin-bottom: 2rem;
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .quiz-option {
-width: 100%;
-padding: 1rem;
-background: var(--surface-light);
-border: 1px solid rgba(153, 69, 255, 0.2);
-border-radius: 8px;
-color: var(--text);
-cursor: pointer;
-transition: all 0.3s ease;
+    width: 100%;
+    padding: 1rem;
+    background: var(--surface-light);
+    border: 1px solid rgba(153, 69, 255, 0.2);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .quiz-option:hover {
-border-color: var(--primary);
-transform: translateX(10px);
-}
-
-
-:root {
---primary: #9945FF;
---secondary: #14F195;
---background: #000000;
---surface: #121212;
---surface-light: #1a1a1a;
---text: #ffffff;
---text-secondary: #C4C4C4;
---gradient: linear-gradient(to right, #9945FF, #14F195);
---gradient-hover: linear-gradient(to right, #8935EF, #00E085);
-}
-
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Inter', sans-serif;
-}
-
-body {
-background-color: var(--background);
-color: var(--text);
-line-height: 1.6;
-overflow-x: hidden;
-}
-
-.container {
-max-width: 1200px;
-margin: 0 auto;
-padding: 0 20px;
-}
-
-/* Navigation */
-.nav {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-z-index: 100;
-background: rgba(0, 0, 0, 0.8);
-backdrop-filter: blur(10px);
-border-bottom: 1px solid rgba(153, 69, 255, 0.1);
-}
-
-.nav-container {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 1.5rem 0;
-}
-
-.nav-logo {
-font-size: 1.5rem;
-font-weight: 700;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-text-decoration: none;
-}
-
-.nav-links {
-display: flex;
-gap: 2rem;
-}
-
-.nav-link {
-color: var(--text);
-text-decoration: none;
-font-weight: 500;
-transition: color 0.3s ease;
-position: relative;
-}
-
-.nav-link::after {
-content: '';
-position: absolute;
-bottom: -5px;
-left: 0;
-width: 0;
-height: 2px;
-background: var(--gradient);
-transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-width: 100%;
-}
-
-.nav-link.active {
-color: var(--primary);
-}
-/* Hero Section */
-.hero {
-position: relative;
-min-height: 100vh;
-display: flex;
-align-items: center;
-padding: 6rem 0 4rem;
-overflow: hidden;
-}
-
-.hero::before {
-content: '';
-position: absolute;
-top: -50%;
-left: -50%;
-width: 200%;
-height: 200%;
-background: radial-gradient(circle, rgba(153, 69, 255, 0.1), transparent 60%);
-z-index: 0;
-animation: rotate 20s linear infinite;
-}
-
-@keyframes rotate {
-from { transform: rotate(0deg); }
-to { transform: rotate(360deg); }
-}
-
-.hero-content {
-position: relative;
-z-index: 1;
-text-align: center;
-}
-
-.hero h1 {
-font-size: 4.5rem;
-font-weight: 700;
-margin-bottom: 1.5rem;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-line-height: 1.2;
-}
-
-.hero p {
-font-size: 1.25rem;
-color: var(--text-secondary);
-max-width: 600px;
-margin: 0 auto 2rem;
-}
-
-/* Market Stats Section */
-.market-stats {
-padding: 4rem 0;
-background: var(--surface);
-position: relative;
-}
-
-.coin-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 2rem;
-margin-bottom: 4rem;
-}
-
-.coin-card {
-background: var(--surface-light);
-border-radius: 16px;
-padding: 1.5rem;
-border: 1px solid rgba(153, 69, 255, 0.2);
-transition: all 0.3s ease;
-opacity: 0;
-transform: translateY(20px);
-}
-
-.coin-card.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-.coin-details {
-margin-top: 1.5rem;
-padding-top: 1.5rem;
-border-top: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.detail-item {
-display: flex;
-justify-content: space-between;
-margin-bottom: 0.5rem;
-}
-
-.detail-label {
-color: var(--text-secondary);
-font-size: 0.9rem;
-}
-
-.detail-value {
-font-weight: 500;
-}
-
-.coin-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 1.5rem;
-}
-
-.coin-info {
-display: flex;
-align-items: center;
-gap: 1rem;
-}
-
-.coin-icon {
-width: 40px;
-height: 40px;
-}
-
-.coin-name {
-font-size: 1.2rem;
-font-weight: 600;
-}
-
-.coin-symbol {
-color: var(--text-secondary);
-font-size: 0.9rem;
-}
-
-.coin-price {
-text-align: right;
-}
-
-.current-price {
-font-size: 1.4rem;
-font-weight: 700;
-margin-bottom: 0.5rem;
-}
-
-.price-change {
-padding: 0.3rem 0.8rem;
-border-radius: 20px;
-font-size: 0.9rem;
-}
-
-.price-change.positive {
-background: rgba(20, 241, 149, 0.1);
-color: var(--secondary);
-}
-
-.price-change.negative {
-background: rgba(255, 71, 71, 0.1);
-color: #ff4747;
-}
-
-.chart-container {
-height: 150px;
-margin-top: 1.5rem;
-}
-
-/* News Section */
-.news-section {
-padding: 4rem 0;
-background: var(--background);
-}
-
-.news-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 2rem;
-}
-
-.news-card {
-background: var(--surface);
-border-radius: 16px;
-overflow: hidden;
-transition: transform 0.3s ease;
-}
-
-.news-card:hover {
-transform: translateY(-5px);
-}
-
-.news-image {
-width: 100%;
-height: 200px;
-overflow: hidden;
-}
-
-.news-image img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-
-.news-content {
-padding: 1.5rem;
-}
-
-.news-tag {
-display: inline-block;
-padding: 0.3rem 0.8rem;
-background: rgba(153, 69, 255, 0.1);
-color: var(--primary);
-border-radius: 20px;
-font-size: 0.9rem;
-margin-bottom: 1rem;
-}
-
-.news-content h3 {
-font-size: 1.2rem;
-margin-bottom: 1rem;
-line-height: 1.4;
-}
-
-.news-content p {
-color: var(--text-secondary);
-}
-
-.news-date {
-color: var(--text-secondary);
-font-size: 0.9rem;
-margin-top: 1rem;
-display: block;
-}
-/* Contact Section */
-.contact-section {
-padding: 4rem 0;
-background: var(--surface);
-}
-
-.contact-container {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 4rem;
-max-width: 1000px;
-margin: 0 auto;
-}
-
-.contact-info {
-padding: 2rem;
-background: var(--surface-light);
-border-radius: 16px;
-border: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.contact-info h3 {
-font-size: 1.5rem;
-margin-bottom: 1.5rem;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-.contact-links {
-list-style: none;
-}
-
-.contact-link {
-display: flex;
-align-items: center;
-gap: 1rem;
-padding: 1rem 0;
-color: var(--text);
-text-decoration: none;
-transition: transform 0.3s ease;
-}
-
-.contact-link:hover {
-transform: translateX(10px);
-}
-
-.contact-link i {
-width: 40px;
-height: 40px;
-background: var(--gradient);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.2rem;
-}
-
-.contact-link span {
-font-size: 1.1rem;
-}
-
-.contact-form {
-padding: 2rem;
-background: var(--surface-light);
-border-radius: 16px;
-border: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.form-group {
-margin-bottom: 1.5rem;
-}
-
-.form-group label {
-display: block;
-margin-bottom: 0.5rem;
-color: var(--text-secondary);
-}
-
-.form-group input,
-.form-group textarea {
-width: 100%;
-padding: 1rem;
-background: var(--surface);
-border: 1px solid rgba(153, 69, 255, 0.2);
-border-radius: 8px;
-color: var(--text);
-font-size: 1rem;
-}
-
-.form-group textarea {
-height: 150px;
-resize: vertical;
-}
-
-.btn {
-padding: 1rem 2rem;
-border-radius: 8px;
-font-weight: 500;
-text-decoration: none;
-transition: all 0.3s ease;
-cursor: pointer;
-border: none;
-font-size: 1rem;
-}
-
-.btn-primary {
-background: var(--gradient);
-color: white;
-width: 100%;
-}
-
-.btn-primary:hover {
-opacity: 0.9;
-transform: translateY(-2px);
-}
-
-/* Footer */
-.footer {
-background: var(--surface);
-padding: 4rem 0 2rem;
-border-top: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.footer-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 3rem;
-margin-bottom: 3rem;
-}
-
-.footer-title {
-font-size: 1.5rem;
-font-weight: 700;
-margin-bottom: 1rem;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-.footer-description {
-color: var(--text-secondary);
-margin-bottom: 1.5rem;
-}
-
-.social-links {
-display: flex;
-gap: 1rem;
-}
-
-.social-link {
-width: 40px;
-height: 40px;
-border-radius: 50%;
-background: var(--surface-light);
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--text);
-text-decoration: none;
-transition: all 0.3s ease;
-}
-
-.social-link:hover {
-background: var(--primary);
-transform: translateY(-3px);
-}
-
-.footer-links {
-list-style: none;
-}
-
-.footer-links li {
-margin-bottom: 0.8rem;
-}
-
-.footer-links a {
-color: var(--text-secondary);
-text-decoration: none;
-transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-color: var(--primary);
-}
-
-.footer-bottom {
-text-align: center;
-padding-top: 2rem;
-border-top: 1px solid rgba(153, 69, 255, 0.2);
-color: var(--text-secondary);
-}
-
-/* Smooth scroll için */
-html {
-scroll-behavior: smooth;
-}
-
-/* Section'lar için animasyon sınıfları */
-.section-animate {
-opacity: 0;
-transform: translateY(50px);
-transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.section-animate.active {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* Style kısmına eklenecek kodlar */
-.fade-in {
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 1s cubic-bezier(0.645, 0.045, 0.355, 1),
-transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.fade-in.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* Style kısmına eklenecek */
-.geometric-background {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-z-index: -1;
-overflow: hidden;
-}
-
-.geometric-shape {
-position: absolute;
-border-radius: 50%;
-background: linear-gradient(45deg, var(--primary), var(--secondary));
-opacity: 0.1;
-filter: blur(50px);
-animation: floatAnimation 20s infinite linear;
-}
-
-.shape1 {
-width: 400px;
-height: 400px;
-top: -100px;
-left: -100px;
-animation-delay: 0s;
-}
-
-.shape2 {
-width: 300px;
-height: 300px;
-top: 50%;
-right: -50px;
-animation-delay: -5s;
-}
-
-.shape3 {
-width: 350px;
-height: 350px;
-bottom: -100px;
-left: 30%;
-animation-delay: -10s;
-}
-
-@keyframes floatAnimation {
-0% {
-transform: rotate(0deg) translate(0, 0) scale(1);
-}
-33% {
-transform: rotate(120deg) translate(50px, 50px) scale(1.1);
-}
-66% {
-transform: rotate(240deg) translate(-50px, 50px) scale(0.9);
-}
-100% {
-transform: rotate(360deg) translate(0, 0) scale(1);
-}
-}
-
-/* Kartlar için kademeli geçiş */
-.coin-card, .news-card {
-transition-duration: 1.2s;
-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-/* Section başlıkları için özel animasyon */
-.section-title {
-opacity: 0;
-transform: translateY(30px);
-transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.section-title.active {
-opacity: 1;
-transform: translateY(0);
-}
-
-.loading-indicator {
-text-align: center;
-padding: 2rem;
-color: var(--text-secondary);
-}
-
-.loading-indicator i {
-font-size: 2rem;
-margin-bottom: 1rem;
-}
-
-.error-message {
-text-align: center;
-padding: 2rem;
-color: var(--text-secondary);
-background: var(--surface);
-border-radius: 16px;
-border: 1px solid rgba(255, 71, 71, 0.2);
-}
-
-.error-message i {
-font-size: 2rem;
-color: #ff4747;
-margin-bottom: 1rem;
-}
-
-.news-card a {
-text-decoration: none;
-color: inherit;
-display: block;
-}
-
-.converter-container {
-background: var(--surface-light);
-border-radius: 16px;
-padding: 2rem;
-margin-top: 3rem;
-border: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.converter-container h3 {
-font-size: 1.5rem;
-margin-bottom: 1.5rem;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-.converter-form {
-display: grid;
-gap: 1.5rem;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-.converter-form .form-group {
-margin-bottom: 0;
-}
-
-.converter-form select,
-.converter-form input {
-width: 100%;
-padding: 0.8rem;
-background: var(--surface);
-border: 1px solid rgba(153, 69, 255, 0.2);
-border-radius: 8px;
-color: var(--text);
-font-size: 1rem;
-}
-
-.result {
-grid-column: 1 / -1;
-text-align: center;
-font-size: 1.2rem;
-padding: 1rem;
-background: var(--surface);
-border-radius: 8px;
-border: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.education-section {
-padding: 4rem 0;
-background: var(--surface);
-}
-
-.education-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 2rem;
-margin-top: 2rem;
-}
-
-.education-card {
-background: var(--surface-light);
-border-radius: 16px;
-padding: 2rem;
-border: 1px solid rgba(153, 69, 255, 0.2);
-transition: all 0.3s ease;
-opacity: 0;
-transform: translateY(20px);
-}
-
-.education-card.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-.education-card:hover {
-transform: translateY(-10px);
-box-shadow: 0 10px 20px rgba(153, 69, 255, 0.1);
-}
-
-.education-icon {
-width: 60px;
-height: 60px;
-background: var(--gradient);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-bottom: 1.5rem;
-}
-
-.education-icon i {
-font-size: 1.5rem;
-color: white;
-}
-
-.education-card h3 {
-font-size: 1.5rem;
-margin-bottom: 1.5rem;
-background: var(--gradient);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-.education-item {
-margin-bottom: 1.5rem;
-padding-bottom: 1.5rem;
-border-bottom: 1px solid rgba(153, 69, 255, 0.1);
-opacity: 0;
-transform: translateX(-20px);
-}
-
-.education-item:last-child {
-border-bottom: none;
-margin-bottom: 0;
-padding-bottom: 0;
-}
-
-.education-item h4 {
-color: var(--text);
-margin-bottom: 0.5rem;
-}
-
-.education-item p {
-color: var(--text-secondary);
-font-size: 0.9rem;
-}
-
-.newsletter-form {
-display: flex;
-gap: 1rem;
-background: var(--surface-light);
-padding: 0.5rem;
-border-radius: 50px;
-border: 1px solid rgba(153, 69, 255, 0.2);
-max-width: 500px;
-margin: 0 auto;
-}
-
-.newsletter-form input[type="email"] {
-flex: 1;
-background: transparent;
-border: none;
-padding: 1rem 1.5rem;
-color: var(--text);
-font-size: 1rem;
-outline: none;
-}
-
-.newsletter-form input[type="email"]::placeholder {
-color: var(--text-secondary);
-}
-
-.newsletter-form .btn {
-padding: 0.8rem 2rem;
-border-radius: 25px;
-margin: 0.2rem;
-background: var(--gradient);
-color: white;
-border: none;
-cursor: pointer;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.newsletter-form .btn:hover {
-transform: translateY(-2px);
-box-shadow: 0 5px 15px rgba(153, 69, 255, 0.3);
-}
-
-.quiz-section {
-padding: 4rem 0;
-background: var(--surface);
-}
-
-.quiz-container {
-max-width: 800px;
-margin: 2rem auto;
-}
-
-.quiz-card {
-background: var(--surface-light);
-border-radius: 16px;
-padding: 2rem;
-border: 1px solid rgba(153, 69, 255, 0.2);
-position: relative;
-overflow: hidden;
-}
-
-.quiz-progress {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-height: 4px;
-background: rgba(153, 69, 255, 0.1);
-}
-
-.progress-bar {
-height: 100%;
-background: var(--gradient);
-width: 0;
-transition: width 0.3s ease;
-}
-
-.quiz-question {
-font-size: 1.5rem;
-margin-bottom: 2rem;
-color: var(--text);
-}
-
-.quiz-options {
-display: grid;
-gap: 1rem;
-margin-bottom: 2rem;
-}
-
-.quiz-option {
-width: 100%;
-padding: 1rem;
-margin-bottom: 1rem;
-background: var(--surface-light);
-border: 1px solid rgba(153, 69, 255, 0.2);
-border-radius: 8px;
-color: var(--text);
-cursor: pointer;
-transition: all 0.3s ease;
-}
-
-.quiz-option:hover {
-border-color: var(--primary);
-transform: translateX(10px);
-}
-
-.quiz-option.correct {
-background: rgba(20, 241, 149, 0.1);
-border-color: var(--secondary);
-}
-
-.quiz-option.wrong {
-background: rgba(255, 71, 71, 0.1);
-border-color: #ff4747;
-}
-
-.quiz-controls {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-top: 2rem;
-}
-
-.quiz-score {
-font-size: 1.2rem;
-color: var(--primary);
-}
-
-@keyframes slideIn {
-from {
-opacity: 0;
-transform: translateX(50px);
-}
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
-
-.quiz-modal {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.8);
-backdrop-filter: blur(5px);
-z-index: 1000;
-}
-
-.quiz-modal.active {
-display: block;
-}
-
-.quiz-modal-content {
-position: relative;
-background: var(--surface);
-width: 90%;
-max-width: 800px;
-margin: 50px auto;
-padding: 2rem;
-border-radius: 16px;
-border: 1px solid rgba(153, 69, 255, 0.2);
-}
-
-.close-button {
-position: absolute;
-right: 20px;
-top: 20px;
-font-size: 30px;
-color: var(--text-secondary);
-cursor: pointer;
-transition: color 0.3s ease;
-}
-
-.close-button:hover {
-color: var(--primary);
-}
-
-.quiz-card {
-padding: 1rem;
-}
-
-.quiz-question {
-font-size: 1.5rem;
-margin-bottom: 2rem;
-color: var(--text);
-}
-
-.quiz-options {
-display: grid;
-gap: 1rem;
-margin-bottom: 2rem;
-}
-
-.quiz-option {
-width: 100%;
-padding: 1rem;
-background: var(--surface-light);
-border: 1px solid rgba(153, 69, 255, 0.2);
-border-radius: 8px;
-color: var(--text);
-cursor: pointer;
-transition: all 0.3s ease;
-}
-
-.quiz-option:hover {
-border-color: var(--primary);
-transform: translateX(10px);
-}
-</style>
-<!-- Quiz Modal -->
-<div id="quizModal" class="quiz-modal">
-<div class="quiz-modal-content">
-<span class="close-button" onclick="quizModalKapat()">&times;</span>
-<div class="quiz-card">
-                <div class="quiz-content">
-                    <h3 class="quiz-question">Kripto Para Bilgi Testi</h3>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="quizBaslat()">Teste Başla</button>
-                    </div>
-                </div>
+    border-color: var(--primary);
+    transform: translateX(10px);
+}
+
+
+        :root {
+            --primary: #9945FF;
+            --secondary: #14F195;
+            --background: #000000;
+            --surface: #121212;
+            --surface-light: #1a1a1a;
+            --text: #ffffff;
+            --text-secondary: #C4C4C4;
+            --gradient: linear-gradient(to right, #9945FF, #14F195);
+            --gradient-hover: linear-gradient(to right, #8935EF, #00E085);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(153, 69, 255, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+        display: flex;
+        gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 6rem 0 4rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(153, 69, 255, 0.1), transparent 60%);
+            z-index: 0;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Market Stats Section */
+        .market-stats {
+            padding: 4rem 0;
+            background: var(--surface);
+            position: relative;
+        }
+
+        .coin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .coin-card {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .coin-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .coin-details {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        .coin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .coin-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .coin-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .coin-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .coin-symbol {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .coin-price {
+            text-align: right;
+        }
+
+        .current-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-change {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .price-change.positive {
+            background: rgba(20, 241, 149, 0.1);
+            color: var(--secondary);
+        }
+
+        .price-change.negative {
+            background: rgba(255, 71, 71, 0.1);
+            color: #ff4747;
+        }
+
+        .chart-container {
+            height: 150px;
+            margin-top: 1.5rem;
+        }
+
+        /* News Section */
+        .news-section {
+            padding: 4rem 0;
+            background: var(--background);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(153, 69, 255, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .news-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .news-content p {
+            color: var(--text-secondary);
+        }
+
+        .news-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: block;
+        }
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 0;
+            background: var(--surface);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            padding: 2rem;
+            background: var(--surface-light);
+            border-radius: 16px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-links {
+            list-style: none;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            color: var(--text);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-link:hover {
+            transform: translateX(10px);
+        }
+
+        .contact-link i {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-link span {
+            font-size: 1.1rem;
+        }
+
+        .contact-form {
+            padding: 2rem;
+            background: var(--surface-light);
+            border-radius: 16px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(153, 69, 255, 0.2);
+            color: var(--text-secondary);
+        }
+
+        /* Smooth scroll için */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Section'lar için animasyon sınıfları */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .section-animate.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style kısmına eklenecek kodlar */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.645, 0.045, 0.355, 1),
+                        transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style kısmına eklenecek */
+        .geometric-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .geometric-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            filter: blur(50px);
+            animation: floatAnimation 20s infinite linear;
+        }
+
+        .shape1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        .shape3 {
+            width: 350px;
+            height: 350px;
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes floatAnimation {
+            0% {
+                transform: rotate(0deg) translate(0, 0) scale(1);
+            }
+            33% {
+                transform: rotate(120deg) translate(50px, 50px) scale(1.1);
+            }
+            66% {
+                transform: rotate(240deg) translate(-50px, 50px) scale(0.9);
+            }
+            100% {
+                transform: rotate(360deg) translate(0, 0) scale(1);
+            }
+        }
+
+        /* Kartlar için kademeli geçiş */
+        .coin-card, .news-card {
+            transition-duration: 1.2s;
+            transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        /* Section başlıkları için özel animasyon */
+        .section-title {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .section-title.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .loading-indicator i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 71, 71, 0.2);
+        }
+
+        .error-message i {
+            font-size: 2rem;
+            color: #ff4747;
+            margin-bottom: 1rem;
+        }
+
+        .news-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .converter-container {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .converter-container h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .converter-form {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .converter-form .form-group {
+            margin-bottom: 0;
+        }
+
+        .converter-form select,
+        .converter-form input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--surface);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .result {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .education-section {
+            padding: 4rem 0;
+            background: var(--surface);
+        }
+
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .education-card {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .education-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .education-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(153, 69, 255, 0.1);
+        }
+
+        .education-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .education-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .education-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .education-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(153, 69, 255, 0.1);
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .education-item h4 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .education-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            background: var(--surface-light);
+            padding: 0.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input[type="email"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 1.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-form input[type="email"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .newsletter-form .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            margin: 0.2rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .newsletter-form .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(153, 69, 255, 0.3);
+        }
+
+        .quiz-section {
+            padding: 4rem 0;
+            background: var(--surface);
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .quiz-card {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(153, 69, 255, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-option {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .quiz-option.correct {
+            background: rgba(20, 241, 149, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.wrong {
+            background: rgba(255, 71, 71, 0.1);
+            border-color: #ff4747;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .quiz-score {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .quiz-modal.active {
+            display: block;
+        }
+
+        .quiz-modal-content {
+            position: relative;
+            background: var(--surface);
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(153, 69, 255, 0.2);
+        }
+
+        .close-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 30px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: var(--primary);
+        }
+
+        .quiz-card {
+            padding: 1rem;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-option {
+            width: 100%;
+            padding: 1rem;
+            background: var(--surface-light);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            transform: translateX(10px);
+        }
+    </style>
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="quiz-modal">
+        <div class="quiz-modal-content">
+            <span class="close-button" onclick="quizModalKapat()">&times;</span>
+            <div class="quiz-card">
                 <div class="quiz-content"></div>
-</div>
-</div>
-</div>
+            </div>
+        </div>
+    </div>
 </head>
 <body>
-<div class="geometric-background">
-<div class="geometric-shape shape1"></div>
-<div class="geometric-shape shape2"></div>
-<div class="geometric-shape shape3"></div>
-</div>
+    <div class="geometric-background">
+        <div class="geometric-shape shape1"></div>
+        <div class="geometric-shape shape2"></div>
+        <div class="geometric-shape shape3"></div>
+    </div>
 
-<!-- Navigation -->
-<nav class="nav">
-<div class="nav-container">
-<a href="#" class="nav-logo">Kripto Ekosistemi</a>
-<div class="nav-links">
-<a href="#markets" class="nav-link">Piyasalar</a>
-<a href="#news" class="nav-link">Haberler</a>
-<a href="#contact" class="nav-link">İletişim</a>
-<a href="#" class="nav-link" onclick="quizModalAc()">Quiz</a>
-</div>
-</div>
-</nav>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Kripto Ekosistemi</a>
+            <div class="nav-links">
+                <a href="#markets" class="nav-link">Piyasalar</a>
+                <a href="#news" class="nav-link">Haberler</a>
+                <a href="#contact" class="nav-link">İletişim</a>
+                <a href="#" class="nav-link" onclick="quizModalAc()">Quiz</a>
+            </div>
+        </div>
+    </nav>
 
-<!-- Hero Section -->
-<section class="hero">
-<div class="container hero-content">
-<h1>Kripto Dünyasını Keşfet</h1>
-<p>En güncel kripto para verileri, haberler ve analizler tek platformda.</p>
-</div>
-</section>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Kripto Dünyasını Keşfet</h1>
+            <p>En güncel kripto para verileri, haberler ve analizler tek platformda.</p>
+        </div>
+    </section>
 
-<!-- Market Stats Section -->
-<section id="markets" class="market-stats">
-<div class="container">
-<div class="section-header">
-<h2>Piyasa İstatistikleri</h2>
-</div>
-<div class="coin-grid">
-<!-- Coin kartları buraya dinamik olarak eklenecek -->
-</div>
-</div>
-</section>
+    <!-- Market Stats Section -->
+    <section id="markets" class="market-stats">
+        <div class="container">
+            <div class="section-header">
+                <h2>Piyasa İstatistikleri</h2>
+            </div>
+            <div class="coin-grid">
+                <!-- Coin kartları buraya dinamik olarak eklenecek -->
+            </div>
+        </div>
+    </section>
 
-<!-- Education Section -->
-<section id="education" class="education-section">
-<div class="container">
-<h2 class="section-title">Kripto Para Eğitimi</h2>
-<div class="education-grid">
-<!-- Temel Seviye -->
-<div class="education-card beginner">
-<div class="education-icon">
-<i class="fas fa-seedling"></i>
-</div>
-<h3>Temel Seviye</h3>
-<div class="education-content">
-<div class="education-item">
-<h4>Blockchain Nedir?</h4>
-<p>Blockchain teknolojisinin temelleri ve çalışma prensipleri.</p>
-</div>
-<div class="education-item">
-<h4>Kripto Para Nedir?</h4>
-<p>Kripto paraların tanımı, özellikleri ve kullanım alanları.</p>
-</div>
-<div class="education-item">
-<h4>Cüzdan Güvenliği</h4>
-<p>Kripto para cüzdanları ve güvenlik önlemleri.</p>
-</div>
-</div>
-</div>
+    <!-- Education Section -->
+    <section id="education" class="education-section">
+        <div class="container">
+            <h2 class="section-title">Kripto Para Eğitimi</h2>
+            <div class="education-grid">
+                <!-- Temel Seviye -->
+                <div class="education-card beginner">
+                    <div class="education-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Temel Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Blockchain Nedir?</h4>
+                            <p>Blockchain teknolojisinin temelleri ve çalışma prensipleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Kripto Para Nedir?</h4>
+                            <p>Kripto paraların tanımı, özellikleri ve kullanım alanları.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Cüzdan Güvenliği</h4>
+                            <p>Kripto para cüzdanları ve güvenlik önlemleri.</p>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Orta Seviye -->
-<div class="education-card intermediate">
-<div class="education-icon">
-<i class="fas fa-chart-line"></i>
-</div>
-<h3>Orta Seviye</h3>
-<div class="education-content">
-<div class="education-item">
-<h4>Teknik Analiz</h4>
-<p>Grafik okuma ve temel teknik analiz yöntemleri.</p>
-</div>
-<div class="education-item">
-<h4>DeFi Sistemleri</h4>
-<p>Merkeziyetsiz finans sistemleri ve protokolleri.</p>
-</div>
-<div class="education-item">
-<h4>Trading Stratejileri</h4>
-<p>Temel alım-satım stratejileri ve risk yönetimi.</p>
-</div>
-</div>
-</div>
+                <!-- Orta Seviye -->
+                <div class="education-card intermediate">
+                    <div class="education-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Orta Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Teknik Analiz</h4>
+                            <p>Grafik okuma ve temel teknik analiz yöntemleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>DeFi Sistemleri</h4>
+                            <p>Merkeziyetsiz finans sistemleri ve protokolleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Trading Stratejileri</h4>
+                            <p>Temel alım-satım stratejileri ve risk yönetimi.</p>
+                        </div>
+                    </div>
+                </div>
 
-<!-- İleri Seviye -->
-<div class="education-card advanced">
-<div class="education-icon">
-<i class="fas fa-brain"></i>
-</div>
-<h3>İleri Seviye</h3>
-<div class="education-content">
-<div class="education-item">
-<h4>Smart Contracts</h4>
-<p>Akıllı kontratların çalışma mantığı ve uygulamaları.</p>
-</div>
-<div class="education-item">
-<h4>Tokenomics</h4>
-<p>Token ekonomisi ve değerleme yöntemleri.</p>
-</div>
-<div class="education-item">
-<h4>DAO Yapıları</h4>
-<p>Merkeziyetsiz otonom organizasyonlar.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
+                <!-- İleri Seviye -->
+                <div class="education-card advanced">
+                    <div class="education-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>İleri Seviye</h3>
+                    <div class="education-content">
+                        <div class="education-item">
+                            <h4>Smart Contracts</h4>
+                            <p>Akıllı kontratların çalışma mantığı ve uygulamaları.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>Tokenomics</h4>
+                            <p>Token ekonomisi ve değerleme yöntemleri.</p>
+                        </div>
+                        <div class="education-item">
+                            <h4>DAO Yapıları</h4>
+                            <p>Merkeziyetsiz otonom organizasyonlar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- News Section -->
-<section id="news" class="news-section">
-<div class="container">
-<h2 class="section-title">Kripto Haberleri</h2>
-<div class="news-grid">
-<div class="loading-indicator">
-<i class="fas fa-spinner fa-spin"></i>
-<p>Haberler yükleniyor...</p>
-</div>
-</div>
-</div>
-</section>
+    <!-- News Section -->
+    <section id="news" class="news-section">
+        <div class="container">
+            <h2 class="section-title">Kripto Haberleri</h2>
+            <div class="news-grid">
+                <div class="loading-indicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Haberler yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Contact Section -->
-<section id="contact" class="contact-section">
-<div class="container">
-<h2 class="section-title">İletişime Geçin</h2>
-<div class="contact-container">
-<div class="contact-info">
-<h3>İletişim Bilgileri</h3>
-<ul class="contact-links">
-<li>
-<a href="mailto:berke.ipekci@gmail.com" class="contact-link">
-<i class="fas fa-envelope"></i>
-<span>berke.ipekci@gmail.com</span>
-</a>
-</li>
-<li>
-<a href="https://www.linkedin.com/in/berkeipekci/" target="_blank" class="contact-link">
-<i class="fab fa-linkedin"></i>
-<span>LinkedIn</span>
-</a>
-</li>
-</ul>
-</div>
-<div class="contact-form">
-<form id="contactForm" onsubmit="return sendEmail(event)">
-<div class="form-group">
-<label for="name">Adınız</label>
-<input type="text" id="name" required>
-</div>
-<div class="form-group">
-<label for="email">E-posta Adresiniz</label>
-<input type="email" id="email" required>
-</div>
-<div class="form-group">
-<label for="message">Mesajınız</label>
-<textarea id="message" required></textarea>
-</div>
-<button type="submit" class="btn btn-primary">Gönder</button>
-</form>
-</div>
-</div>
-</div>
-</section>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">İletişime Geçin</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>İletişim Bilgileri</h3>
+                    <ul class="contact-links">
+                        <li>
+                            <a href="mailto:berke.ipekci@gmail.com" class="contact-link">
+                                <i class="fas fa-envelope"></i>
+                                <span>berke.ipekci@gmail.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/berkeipekci/" target="_blank" class="contact-link">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm" onsubmit="return sendEmail(event)">
+                        <div class="form-group">
+                            <label for="name">Adınız</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-posta Adresiniz</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Footer -->
-<footer class="footer">
-<div class="container">
-<div class="footer-grid">
-<div class="footer-col">
-<h3 class="footer-title">KriptoEkosistem</h3>
-<p class="footer-description">
-En güncel kripto para verileri, haberler ve analizler için güvenilir platformunuz.
-</p>
-<div class="social-links">
-<a href="https://www.linkedin.com/in/berkeipekci/" target="_blank" class="social-link">
-<i class="fab fa-linkedin"></i>
-</a>
-<a href="mailto:berke.ipekci@gmail.com" class="social-link">
-<i class="fas fa-envelope"></i>
-</a>
-</div>
-</div>
-<div class="footer-col">
-<h4>Hızlı Linkler</h4>
-<ul class="footer-links">
-<li><a href="#markets">Piyasalar</a></li>
-<li><a href="#news">Haberler</a></li>
-<li><a href="#contact">İletişim</a></li>
-                        <li><a href="#" onclick="quizModalAc(event)">Quiz</a></li>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="footer-title">KriptoEkosistem</h3>
+                    <p class="footer-description">
+                        En güncel kripto para verileri, haberler ve analizler için güvenilir platformunuz.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/berkeipekci/" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:berke.ipekci@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Hızlı Linkler</h4>
+                    <ul class="footer-links">
+                        <li><a href="#markets">Piyasalar</a></li>
+                        <li><a href="#news">Haberler</a></li>
+                        <li><a href="#contact">İletişim</a></li>
                         <li><a href="#" onclick="quizBaslat(); return false;">Bilgilerinizi Test Edin</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h4>Bülten</h4>
-<p>Kripto dünyasındaki son gelişmelerden haberdar olun.</p>
-<form class="newsletter-form" onsubmit="return subscribeNewsletter(event)">
-<input type="email" placeholder="E-posta adresinizi girin" required>
-<button type="submit" class="btn">Abone Ol</button>
-</form>
-</div>
-</div>
-<div class="footer-bottom">
-<p>&copy; 2024 KriptoEkosistem. Tüm hakları saklıdır.</p>
-</div>
-</div>
-</footer>
-<script>
-// Coin verileri güncellendi
-const cryptoData = {
-BTC: {
-name: 'Bitcoin',
-price: 98161.42,
-change: 0.03,
-color: '#F7931A', // Bitcoin turuncu
-history: [95000, 96000, 97000, 97500, 98000, 98161]
-},
-ETH: {
-name: 'Ethereum',
-price: 3637.08,
-change: 1.15,
-color: '#627EEA', // Ethereum mavi
-history: [3400, 3450, 3500, 3550, 3600, 3637]
-},
-SOL: {
-name: 'Solana',
-price: 216.83,
-change: 0.32,
-color: '#00FFA3', // Solana yeşil
-history: [190, 195, 200, 210, 215, 216.83]
-},
-BNB: {
-name: 'BNB',
-price: 711.94,
-change: 1.27,
-color: '#F3BA2F', // BNB sarı
-history: [700, 705, 708, 710, 711, 711.94]
-},
-XRP: {
-name: 'XRP',
-price: 2.39,
-change: 3.29,
-color: '#23292F', // XRP siyah
-history: [2.20, 2.25, 2.30, 2.35, 2.37, 2.39]
-},
-ADA: {
-name: 'Cardano',
-price: 1.06,
-change: 3.47,
-color: '#0033AD', // Cardano mavi
-history: [0.90, 0.95, 1.00, 1.03, 1.05, 1.06]
-},
-DOGE: {
-name: 'Dogecoin',
-price: 0.3888,
-change: 0.17,
-color: '#C2A633', // Dogecoin altın
-history: [0.35, 0.36, 0.37, 0.38, 0.385, 0.3888]
-},
-DOT: {
-name: 'Polkadot',
-price: 7.62,
-change: -0.5,
-color: '#E6007A', // Polkadot pembe
-history: [7.70, 7.68, 7.66, 7.64, 7.63, 7.62]
-},
-LINK: {
-name: 'Chainlink',
-price: 23.32,
-change: 4.1,
-color: '#2A5ADA', // Chainlink mavi
-history: [22.00, 22.40, 22.80, 23.00, 23.20, 23.32]
-},
-MATIC: {
-name: 'Polygon',
-price: 0.52,
-change: -0.45,
-color: '#8247E5', // Polygon mor
-history: [0.54, 0.53, 0.525, 0.522, 0.521, 0.52]
-}
-};
-
-// Grafik oluşturma fonksiyonu güncellendi
-function createChart(coinSymbol) {
-try {
-const chartId = `${coinSymbol.toLowerCase()}Chart`;
-const canvas = document.createElement('canvas');
-canvas.id = chartId;
-canvas.style.height = '150px';
-
-const coinCard = document.querySelector(`.coin-card:has(.coin-symbol:contains('${coinSymbol}'))`);
-if (coinCard) {
-coinCard.appendChild(canvas);
-
-const ctx = canvas.getContext('2d');
-const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-const data = cryptoData[coinSymbol];
-
-gradient.addColorStop(0, `${data.color}33`);
-gradient.addColorStop(1, `${data.color}00`);
-
-return new Chart(ctx, {
-type: 'line',
-data: {
-labels: ['5s', '4s', '3s', '2s', '1s', 'Şimdi'],
-datasets: [{
-label: coinSymbol,
-data: data.history,
-borderColor: data.color,
-borderWidth: 2,
-fill: true,
-backgroundColor: gradient,
-tension: 0.4,
-pointRadius: 0,
-pointHoverRadius: 4,
-pointHoverBackgroundColor: data.color
-}]
-},
-options: {
-plugins: {
-legend: {
-display: false
-}
-},
-scales: {
-x: {
-display: false
-},
-y: {
-display: false
-}
-},
-responsive: true,
-maintainAspectRatio: false
-}
-});
-}
-} catch (error) {
-console.error(`Chart creation error for ${coinSymbol}:`, error);
-}
-}
-
-// E-posta gönderimi için fonksiyon
-async function sendEmail(event) {
-event.preventDefault();
-
-const name = document.getElementById('name').value;
-const email = document.getElementById('email').value;
-const message = document.getElementById('message').value;
-const submitButton = event.target.querySelector('button');
-
-try {
-submitButton.disabled = true;
-submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
-
-await emailjs.send(
-"service_mnldaov",
-"template_ucqyb9l",
-{
-from_name: name,
-from_email: email,
-message: message,
-to_email: "berke.ipekci@gmail.com"
-}
-);
-
-Swal.fire({
-icon: 'success',
-title: 'Başarılı!',
-text: 'Mesajınız başarıyla gönderildi.',
-confirmButtonColor: '#9945FF'
-});
-
-event.target.reset();
-
-} catch (error) {
-console.error('Mesaj gönderme hatası:', error);
-
-Swal.fire({
-icon: 'error',
-title: 'Hata!',
-text: 'Mesaj gönderilirken bir hata oluştu.',
-confirmButtonColor: '#9945FF'
-});
-
-} finally {
-submitButton.disabled = false;
-submitButton.innerHTML = 'Gönder';
-}
-
-return false;
-}
-
-// EmailJS başlatma
-(function() {
-emailjs.init("sjyBZfSHLsKEEAkx1");
-})();
-
-// Bülten aboneliği fonksiyonu
-async function subscribeNewsletter(event) {
-event.preventDefault();
-
-const email = event.target.querySelector('input[type="email"]').value;
-const submitButton = event.target.querySelector('button');
-
-try {
-// Buton durumunu güncelle
-submitButton.disabled = true;
-submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
-
-// EmailJS ile e-posta gönder
-await emailjs.send(
-"service_mnldaov",
-"template_ucqyb9l",
-{
-to_email: "berke.ipekci@gmail.com",
-from_email: email,
-subject: "Yeni Bülten Aboneliği",
-message: `Yeni bir bülten aboneliği: ${email}`
-}
-);
-
-// Başarılı mesajı göster
-Swal.fire({
-icon: 'success',
-title: 'Başarılı!',
-text: 'Bülten aboneliğiniz başarıyla gerçekleşti.',
-confirmButtonColor: '#9945FF'
-});
-
-// Formu sıfırla
-event.target.reset();
-
-} catch (error) {
-console.error('Bülten aboneliği hatası:', error);
-
-// Hata mesajı göster
-Swal.fire({
-icon: 'error',
-title: 'Hata!',
-text: 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.',
-confirmButtonColor: '#9945FF'
-});
-
-} finally {
-// Buton durumunu geri al
-submitButton.disabled = false;
-submitButton.innerHTML = 'Abone Ol';
-}
-
-return false;
-}
-
-// Smooth scroll için fonksiyon
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-anchor.addEventListener('click', function (e) {
-e.preventDefault();
-const targetId = this.getAttribute('href');
-if (targetId && targetId !== '#') {
-const targetElement = document.querySelector(targetId);
-if (targetElement) {
-targetElement.scrollIntoView({
-behavior: 'smooth'
-});
-}
-}
-});
-});
-
-// Sayfa yüklendiğinde
-document.addEventListener('DOMContentLoaded', async () => {
-// Önce grafikleri oluştur
-Object.keys(cryptoData).forEach(coin => {
-createChart(coin);
-});
-
-// Scroll animasyonları için gözlemci
-const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-// Geçiş gecikmesini hesapla
-const delay = entry.target.dataset.delay || 0;
-setTimeout(() => {
-entry.target.classList.add('visible');
-entry.target.classList.add('active');
-}, delay);
-}
-});
-}, {
-threshold: 0.15, // Daha erken tetiklenme
-rootMargin: '0px 0px -10% 0px' // Görünüm alanı ayarı
-});
-
-// Section başlıkları için gözlem
-document.querySelectorAll('.section-title').forEach(title => {
-title.classList.add('section-animate');
-observer.observe(title);
-});
-
-// Coin kartları için kademeli animasyon
-document.querySelectorAll('.coin-card').forEach((card, index) => {
-card.style.transitionDelay = `${index * 0.15}s`; // Gecikmeyi artırdık
-card.classList.add('fade-in');
-observer.observe(card);
-});
-
-// Haber kartları için kademeli animasyon
-document.querySelectorAll('.news-card').forEach((card, index) => {
-card.style.transitionDelay = `${index * 0.15}s`; // Gecikmeyi artırdık
-card.classList.add('fade-in');
-observer.observe(card);
-});
-
-// Smooth scroll davranışını güncelle
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-anchor.addEventListener('click', function (e) {
-e.preventDefault();
-const targetId = this.getAttribute('href');
-const targetElement = document.querySelector(targetId);
-
-if (targetElement) {
-const headerOffset = 80;
-const elementPosition = targetElement.getBoundingClientRect().top;
-const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-window.scrollTo({
-top: offsetPosition,
-behavior: 'smooth',
-// Daha yavaş scroll için
-duration: 1500 // ms cinsinden süre
-});
-}
-});
-});
-
-// Sayfa yüklenme animasyonu
-document.body.classList.add('loaded');
-
-// Mevcut DOMContentLoaded içeriğine ekleyin
-haberleriGuncelle();
-
-// Her 5 dakikada bir haberleri güncelle
-setInterval(haberleriGuncelle, 300000);
-
-donusturucuOlustur();
-});
-
-// Coin fiyatlarını güncelle
-setInterval(() => {
-Object.keys(cryptoData).forEach(coin => {
-const randomChange = (Math.random() - 0.5) * 2;
-cryptoData[coin].price *= (1 + randomChange / 100);
-cryptoData[coin].change = randomChange;
-
-// DOM elementlerini bul
-const coinCard = document.querySelector(`#${coin.toLowerCase()}Chart`).closest('.coin-card');
-const priceElement = coinCard.querySelector('.current-price');
-const changeElement = coinCard.querySelector('.price-change');
-
-if (priceElement && changeElement) {
-// Fiyatı güncelle
-priceElement.textContent = `$${cryptoData[coin].price.toFixed(2)}`;
-
-// Yüzde değişimi güncelle ve rengi ayarla
-const changeValue = cryptoData[coin].change;
-changeElement.textContent = `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
-
-// CSS sınıflarını güncelle
-changeElement.classList.remove('positive', 'negative');
-changeElement.classList.add(changeValue >= 0 ? 'positive' : 'negative');
-}
-});
-}, 30000);
-
-// Başlangıçta doğru renkleri ayarla
-document.addEventListener('DOMContentLoaded', () => {
-Object.keys(cryptoData).forEach(coin => {
-const coinCard = document.querySelector(`#${coin.toLowerCase()}Chart`).closest('.coin-card');
-const changeElement = coinCard.querySelector('.price-change');
-
-if (changeElement) {
-const changeValue = cryptoData[coin].change;
-changeElement.classList.remove('positive', 'negative');
-changeElement.classList.add(changeValue >= 0 ? 'positive' : 'negative');
-changeElement.textContent = `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
-}
-});
-});
-
-// Arka plan şekilleri için mouse hareketi efekti
-document.addEventListener('mousemove', (e) => {
-const shapes = document.querySelectorAll('.geometric-shape');
-const x = e.clientX / window.innerWidth;
-const y = e.clientY / window.innerHeight;
-
-shapes.forEach(shape => {
-const offsetX = (x - 0.5) * 20;
-const offsetY = (y - 0.5) * 20;
-shape.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-});
-});
-
-async function haberleriFeeddenCek() {
-try {
-// Türkçe kripto haber kaynakları
-const turkceRssKaynaklar = [
-'https://www.coinkolik.com/feed/',
-'https://kriptokoin.com/feed/',
-'https://www.btchaber.com/feed/'
-];
-
-const API_KEY = 'whhza1h2fziyj84nfyl66kfqg3lg6y165gtqo0ho';
-let tumHaberler = [];
-
-for (const kaynak of turkceRssKaynaklar) {
-try {
-const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(kaynak)}&api_key=${API_KEY}`);
-const data = await response.json();
-
-if (data.status === 'ok') {
-const kaynakHaberler = data.items.slice(0, 5).map(item => ({
-baslik: item.title,
-aciklama: item.description.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
-resim: item.thumbnail || item.enclosure?.link || 'varsayilan-haber-resmi.jpg',
-tarih: new Date(item.pubDate).toLocaleString('tr-TR', {
-day: 'numeric',
-month: 'long',
-year: 'numeric',
-hour: '2-digit',
-minute: '2-digit'
-}),
-link: item.link,
-etiket: belirleHaberEtiketi(item.title)
-}));
-tumHaberler = [...tumHaberler, ...kaynakHaberler];
-}
-} catch (hata) {
-console.error(`${kaynak} için hata:`, hata);
-}
-}
-
-// Haberleri tarihe göre sırala ve en yeni 10 haberi döndür
-return tumHaberler
-.sort((a, b) => new Date(b.tarih) - new Date(a.tarih))                    .slice(0, 10);
-
-} catch (hata) {
-console.error('Haber çekme hatası:', hata);
-return [];
-}
-}
-
-function belirleHaberEtiketi(baslik) {
-const etiketler = {
-'Bitcoin': 'Bitcoin',
-'ETH': 'Ethereum',
-'Ethereum': 'Ethereum',
-'Solana': 'Solana',
-'SOL': 'Solana',
-'BNB': 'BNB Chain',
-'Cardano': 'Cardano',
-'ADA': 'Cardano',
-'XRP': 'XRP',
-'Ripple': 'XRP',
-'DOGE': 'Dogecoin',
-'Dogecoin': 'Dogecoin'
-};
-
-for (const [anahtar, etiket] of Object.entries(etiketler)) {
-if (baslik.includes(anahtar)) {
-return etiket;
-}
-}
-return 'Kripto';
-}
-
-async function haberleriGuncelle() {
-const haberlerContainer = document.querySelector('.news-grid');
-
-if (haberlerContainer) {
-// Yükleniyor göstergesi
-haberlerContainer.innerHTML = `
-                   <div class="loading-indicator">
-                       <i class="fas fa-spinner fa-spin"></i>
-                       <p>Haberler yükleniyor...</p>
-                   </div>
-               `;
-
-const haberler = await haberleriFeeddenCek();
-
-if (haberler.length === 0) {
-haberlerContainer.innerHTML = `
-                       <div class="error-message">
-                           <i class="fas fa-exclamation-circle"></i>
-                           <p>Haberler yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                       </div>
-                   `;
-return;
-}
-
-haberlerContainer.innerHTML = '';
-
-haberler.forEach(haber => {
-const haberKarti = document.createElement('div');
-haberKarti.className = 'news-card fade-in';
-haberKarti.innerHTML = `
-                       <a href="${haber.link}" target="_blank" rel="noopener noreferrer">
-                           <div class="news-image">
-                               <img src="${haber.resim}" alt="${haber.baslik}" onerror="this.src='varsayilan-haber-resmi.jpg'">
-                           </div>
-                           <div class="news-content">
-                               <div class="news-tag">${haber.etiket}</div>
-                               <h3>${haber.baslik}</h3>
-                               <p>${haber.aciklama}</p>
-                               <span class="news-date">${haber.tarih}</span>
-                           </div>
-                       </a>
-                   `;
-haberlerContainer.appendChild(haberKarti);
-});
-
-document.querySelectorAll('.news-card').forEach((card, index) => {
-card.style.transitionDelay = `${index * 0.15}s`;
-setTimeout(() => card.classList.add('visible'), 100);
-});
-}
-}
-
-async function donusturucuOlustur() {
-try {
-// Desteklenen para birimleri
-const paraBirimleri = ['try', 'usd', 'eur', 'gbp'];
-const kriptoParalar = ['bitcoin', 'ethereum', 'solana', 'ripple', 'cardano'];
-
-// Para birimi seçenekleri için HTML oluştur
-const paraBirimiHTML = paraBirimleri.map(birim => 
-`<option value="${birim}">${birim.toUpperCase()}</option>`
-).join('');
-
-// Kripto para seçenekleri için HTML oluştur
-const kriptoHTML = kriptoParalar.map(kripto => 
-`<option value="${kripto}">${kripto.charAt(0).toUpperCase() + kripto.slice(1)}</option>`
-).join('');
-
-// Dönüştürücü formu oluştur
-const donusturucuHTML = `
-                   <div class="converter-container">
-                       <h3>Kripto Para Dönüştürücü</h3>
-                       <div class="converter-form">
-                           <div class="form-group">
-                               <label>Miktar</label>
-                               <input type="number" id="amount" min="0" step="any" value="1">
-                           </div>
-                           <div class="form-group">
-                               <label>Kaynak Para Birimi</label>
-                               <select id="fromCurrency">
-                                   ${kriptoHTML}
-                               </select>
-                           </div>
-                           <div class="form-group">
-                               <label>Hedef Para Birimi</label>
-                               <select id="toCurrency">
-                                   ${paraBirimiHTML}
-                               </select>
-                           </div>
-                           <div class="result" id="convertResult">
-                               1 BTC = ... TRY
-                           </div>
-                       </div>
-                   </div>
-               `;
-
-// HTML'i sayfaya ekle
-document.querySelector('.market-stats .container').insertAdjacentHTML('beforeend', donusturucuHTML);
-
-// Event listener'ları ekle
-['amount', 'fromCurrency', 'toCurrency'].forEach(id => {
-document.getElementById(id).addEventListener('change', donusturucuGuncelle);
-});
-
-// İlk dönüşümü yap
-await donusturucuGuncelle();
-
-} catch (hata) {
-console.error('Dönüştürücü oluşturma hatası:', hata);
-}
-}
-
-async function donusturucuGuncelle() {
-const miktar = document.getElementById('amount').value;
-const kaynakPara = document.getElementById('fromCurrency').value;
-const hedefPara = document.getElementById('toCurrency').value;
-const sonucElement = document.getElementById('convertResult');
-
-try {
-const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${kaynakPara}&vs_currencies=${hedefPara}`);
-const data = await response.json();
-
-if (data[kaynakPara]) {
-const kur = data[kaynakPara][hedefPara];
-const sonuc = (miktar * kur).toLocaleString('tr-TR', {
-maximumFractionDigits: 2
-});
-sonucElement.innerHTML = `${miktar} ${kaynakPara.toUpperCase()} = ${sonuc} ${hedefPara.toUpperCase()}`;
-}
-} catch (hata) {
-console.error('Dönüşüm hatası:', hata);
-sonucElement.innerHTML = 'Dönüşüm sırasında bir hata oluştu';
-}
-}
-
-async function kriptoVerileriniGetir() {
-try {
-const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&locale=tr');
-const data = await response.json();
-
-// Her kripto para için grafik verisi oluştur
-data.forEach(coin => {
-cryptoData[coin.symbol.toUpperCase()] = {
-name: coin.name,
-price: coin.current_price,
-change: coin.price_change_percentage_24h,
-color: `#${Math.floor(Math.random()*16777215).toString(16)}`, // Rastgele renk
-history: coin.sparkline_in_7d?.price.slice(-6) || [0,0,0,0,0,0]
-};
-});
-
-const coinGridHTML = data.map(coin => `
-                   <div class="coin-card fade-in">
-                       <div class="coin-header">
-                           <div class="coin-info">
-                               <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                               <div>
-                                   <div class="coin-name">${coin.name}</div>
-                                   <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
-                               </div>
-                           </div>
-                           <div class="coin-price">
-                               <div class="current-price">$${coin.current_price.toLocaleString('en-US')}</div>
-                               <div class="price-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-                                   ${coin.price_change_percentage_24h.toFixed(2)}%
-                               </div>
-                           </div>
-                       </div>
-                       <div class="coin-details">
-                           <div class="detail-item">
-                               <span class="detail-label">Piyasa Değeri:</span>
-                               <span class="detail-value">$${(coin.market_cap / 1e9).toFixed(2)} Milyar</span>
-                           </div>
-                           <div class="detail-item">
-                               <span class="detail-label">24s Hacim:</span>
-                               <span class="detail-value">$${(coin.total_volume / 1e6).toFixed(2)} Milyon</span>
-                           </div>
-                       </div>
-                   </div>
-               `).join('');
-
-document.querySelector('.coin-grid').innerHTML = coinGridHTML;
-
-// Kart animasyonları ve grafikleri oluştur
-document.querySelectorAll('.coin-card').forEach((card, index) => {
-card.style.transitionDelay = `${index * 0.1}s`;
-setTimeout(() => {
-card.classList.add('visible');
-// Grafik oluştur
-const symbol = card.querySelector('.coin-symbol').textContent;
-createChart(symbol);
-}, 100);
-});
-
-} catch (hata) {
-console.error('Kripto veri çekme hatası:', hata);
-document.querySelector('.coin-grid').innerHTML = `
-                   <div class="error-message">
-                       <i class="fas fa-exclamation-circle"></i>
-                       <p>Veriler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                   </div>
-               `;
-}
-}
-
-// Her 1 dakikada bir verileri güncelle
-setInterval(kriptoVerileriniGetir, 60000);
-
-// Sayfa yüklendiğinde
-document.addEventListener('DOMContentLoaded', () => {
-kriptoVerileriniGetir();
-});
-
-// Eğitim kartları için gözlemci
-const educationObserver = new IntersectionObserver((entries) => {
-entries.forEach((entry, index) => {
-if (entry.isIntersecting) {
-entry.target.classList.add('visible');
-
-// İçerik öğelerini kademeli olarak göster
-const items = entry.target.querySelectorAll('.education-item');
-items.forEach((item, i) => {
-setTimeout(() => {
-item.style.animation = `slideIn 0.5s ease-out ${i * 0.2}s forwards`;
-}, index * 100);
-});
-}
-});
-}, {
-threshold: 0.2
-});
-
-// Eğitim kartlarını gözlemle
-document.querySelectorAll('.education-card').forEach(card => {
-educationObserver.observe(card);
-});
-
-// Quiz Modal Açma ve Kapama Fonksiyonları
-function quizModalAc(event) {
-event.preventDefault();
-const modal = document.getElementById('quizModal');
-modal.style.display = 'block';
-setTimeout(() => {
-modal.classList.add('active');
-}, 10);
-}
-
-function quizModalKapat() {
-const modal = document.getElementById('quizModal');
-modal.classList.remove('active');
-setTimeout(() => {
-modal.style.display = 'none';
-}, 300);
-}
-
-// Modal dışına tıklandığında kapatma
-window.onclick = function(event) {
-const modal = document.getElementById('quizModal');
-if (event.target == modal) {
-quizModalKapat();
-}
-}
-
-setInterval(() => {
-Object.keys(cryptoData).forEach(coin => {
-const chartElement = document.querySelector(`#${coin.toLowerCase()}Chart`);
-if (chartElement) {
-const coinCard = chartElement.closest('.coin-card');
-if (coinCard) {
-// Mevcut güncelleme kodu
-}
-}
-});
-}, 30000);
-
-function quizBaslat() {
-// Quiz başlatma mantığı buraya gelecek
-alert('Quiz başlatılıyor...');
-}
-
-const quizSorulari = [
-{
-soru: "Bitcoin'in yaratıcısı kimdir?",
-secenekler: ["Satoshi Nakamoto", "Vitalik Buterin", "Charlie Lee", "Roger Ver"],
-dogruCevap: 0
-},
-{
-soru: "Ethereum'un ana özelliği nedir?",
-secenekler: ["Akıllı Kontratlar", "Hızlı İşlemler", "Gizlilik", "Düşük Ücretler"],
-dogruCevap: 0
-},
-{
-soru: "Hangi konsensüs mekanizması daha çevre dostudur?",
-secenekler: ["Proof of Stake", "Proof of Work", "Proof of Authority", "Proof of Space"],
-dogruCevap: 0
-}
-];
-
-let mevcutSoru = 0;
-let puan = 0;
-
-function quizModalAc() {
-document.getElementById('quizModal').classList.add('active');
-}
-
-function quizModalKapat() {
-document.getElementById('quizModal').classList.remove('active');
-mevcutSoru = 0;
-puan = 0;
-}
-
-function quizBaslat() {
-mevcutSoru = 0;
-puan = 0;
-soruGoster();
-}
-
-function soruGoster() {
-const soru = quizSorulari[mevcutSoru];
-const quizContent = document.querySelector('.quiz-content');
-
-quizContent.innerHTML = `
-               <h3 class="quiz-question">${soru.soru}</h3>
-               <div class="quiz-options">
-                   ${soru.secenekler.map((secenek, index) => `
-                       <button class="quiz-option" onclick="cevapKontrol(${index})">${secenek}</button>
-                   `).join('')}
-               </div>
-           `;
-}
-
-function cevapKontrol(secilenIndex) {
-const soru = quizSorulari[mevcutSoru];
-
-if (secilenIndex === soru.dogruCevap) {
-puan += 100;
-Swal.fire({
-icon: 'success',
-title: 'Doğru!',
-text: 'Harika gidiyorsun!',
-confirmButtonColor: '#9945FF'
-});
-} else {
-Swal.fire({
-icon: 'error',
-title: 'Yanlış!',
-text: `Doğru cevap: ${soru.secenekler[soru.dogruCevap]}`,
-confirmButtonColor: '#9945FF'
-});
-}
-
-mevcutSoru++;
-
-if (mevcutSoru < quizSorulari.length) {
-setTimeout(soruGoster, 1500);
-} else {
-setTimeout(() => {
-Swal.fire({
-icon: 'info',
-title: 'Quiz Bitti!',
-text: `Toplam puanın: ${puan}`,
-confirmButtonColor: '#9945FF'
-}).then(() => {
-quizModalKapat();
-});
-}, 1500);
-}
-}
-</script>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Bülten</h4>
+                    <p>Kripto dünyasındaki son gelişmelerden haberdar olun.</p>
+                    <form class="newsletter-form" onsubmit="return subscribeNewsletter(event)">
+                        <input type="email" placeholder="E-posta adresinizi girin" required>
+                        <button type="submit" class="btn">Abone Ol</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KriptoEkosistem. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Coin verileri güncellendi
+        const cryptoData = {
+            BTC: {
+                name: 'Bitcoin',
+                price: 98161.42,
+                change: 0.03,
+                color: '#F7931A', // Bitcoin turuncu
+                history: [95000, 96000, 97000, 97500, 98000, 98161]
+            },
+            ETH: {
+                name: 'Ethereum',
+                price: 3637.08,
+                change: 1.15,
+                color: '#627EEA', // Ethereum mavi
+                history: [3400, 3450, 3500, 3550, 3600, 3637]
+            },
+            SOL: {
+                name: 'Solana',
+                price: 216.83,
+                change: 0.32,
+                color: '#00FFA3', // Solana yeşil
+                history: [190, 195, 200, 210, 215, 216.83]
+            },
+            BNB: {
+                name: 'BNB',
+                price: 711.94,
+                change: 1.27,
+                color: '#F3BA2F', // BNB sarı
+                history: [700, 705, 708, 710, 711, 711.94]
+            },
+            XRP: {
+                name: 'XRP',
+                price: 2.39,
+                change: 3.29,
+                color: '#23292F', // XRP siyah
+                history: [2.20, 2.25, 2.30, 2.35, 2.37, 2.39]
+            },
+            ADA: {
+                name: 'Cardano',
+                price: 1.06,
+                change: 3.47,
+                color: '#0033AD', // Cardano mavi
+                history: [0.90, 0.95, 1.00, 1.03, 1.05, 1.06]
+            },
+            DOGE: {
+                name: 'Dogecoin',
+                price: 0.3888,
+                change: 0.17,
+                color: '#C2A633', // Dogecoin altın
+                history: [0.35, 0.36, 0.37, 0.38, 0.385, 0.3888]
+            },
+            DOT: {
+                name: 'Polkadot',
+                price: 7.62,
+                change: -0.5,
+                color: '#E6007A', // Polkadot pembe
+                history: [7.70, 7.68, 7.66, 7.64, 7.63, 7.62]
+            },
+            LINK: {
+                name: 'Chainlink',
+                price: 23.32,
+                change: 4.1,
+                color: '#2A5ADA', // Chainlink mavi
+                history: [22.00, 22.40, 22.80, 23.00, 23.20, 23.32]
+            },
+            MATIC: {
+                name: 'Polygon',
+                price: 0.52,
+                change: -0.45,
+                color: '#8247E5', // Polygon mor
+                history: [0.54, 0.53, 0.525, 0.522, 0.521, 0.52]
+            }
+        };
+
+        // Grafik oluşturma fonksiyonu güncellendi
+        function createChart(coinSymbol) {
+            try {
+                const chartId = `${coinSymbol.toLowerCase()}Chart`;
+                const canvas = document.createElement('canvas');
+                canvas.id = chartId;
+                canvas.style.height = '150px';
+                
+                const coinCard = document.querySelector(`.coin-card:has(.coin-symbol:contains('${coinSymbol}'))`);
+                if (coinCard) {
+                    coinCard.appendChild(canvas);
+                    
+                    const ctx = canvas.getContext('2d');
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+                    const data = cryptoData[coinSymbol];
+                    
+                    gradient.addColorStop(0, `${data.color}33`);
+                    gradient.addColorStop(1, `${data.color}00`);
+
+                    return new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['5s', '4s', '3s', '2s', '1s', 'Şimdi'],
+                            datasets: [{
+                                label: coinSymbol,
+                                data: data.history,
+                                borderColor: data.color,
+                                borderWidth: 2,
+                                fill: true,
+                                backgroundColor: gradient,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 4,
+                                pointHoverBackgroundColor: data.color
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    display: false
+                                },
+                                y: {
+                                    display: false
+                                }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error(`Chart creation error for ${coinSymbol}:`, error);
+            }
+        }
+
+        // E-posta gönderimi için fonksiyon
+        async function sendEmail(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const submitButton = event.target.querySelector('button');
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+                
+                await emailjs.send(
+                    "service_mnldaov",
+                    "template_ucqyb9l",
+                    {
+                        from_name: name,
+                        from_email: email,
+                        message: message,
+                        to_email: "berke.ipekci@gmail.com"
+                    }
+                );
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: 'Mesajınız başarıyla gönderildi.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+                event.target.reset();
+
+            } catch (error) {
+                console.error('Mesaj gönderme hatası:', error);
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Mesaj gönderilirken bir hata oluştu.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Gönder';
+            }
+
+            return false;
+        }
+
+        // EmailJS başlatma
+        (function() {
+            emailjs.init("sjyBZfSHLsKEEAkx1");
+        })();
+
+        // Bülten aboneliği fonksiyonu
+        async function subscribeNewsletter(event) {
+            event.preventDefault();
+            
+            const email = event.target.querySelector('input[type="email"]').value;
+            const submitButton = event.target.querySelector('button');
+            
+            try {
+                // Buton durumunu güncelle
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+                
+                // EmailJS ile e-posta gönder
+                await emailjs.send(
+                    "service_mnldaov",
+                    "template_ucqyb9l",
+                    {
+                        to_email: "berke.ipekci@gmail.com",
+                        from_email: email,
+                        subject: "Yeni Bülten Aboneliği",
+                        message: `Yeni bir bülten aboneliği: ${email}`
+                    }
+                );
+
+                // Başarılı mesajı göster
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: 'Bülten aboneliğiniz başarıyla gerçekleşti.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+                // Formu sıfırla
+                event.target.reset();
+
+            } catch (error) {
+                console.error('Bülten aboneliği hatası:', error);
+                
+                // Hata mesajı göster
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.',
+                    confirmButtonColor: '#9945FF'
+                });
+
+            } finally {
+                // Buton durumunu geri al
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Abone Ol';
+            }
+
+            return false;
+        }
+
+        // Smooth scroll için fonksiyon
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Önce grafikleri oluştur
+            Object.keys(cryptoData).forEach(coin => {
+                createChart(coin);
+            });
+
+            // Scroll animasyonları için gözlemci
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Geçiş gecikmesini hesapla
+                        const delay = entry.target.dataset.delay || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                            entry.target.classList.add('active');
+                        }, delay);
+                    }
+                });
+            }, {
+                threshold: 0.15, // Daha erken tetiklenme
+                rootMargin: '0px 0px -10% 0px' // Görünüm alanı ayarı
+            });
+
+            // Section başlıkları için gözlem
+            document.querySelectorAll('.section-title').forEach(title => {
+                title.classList.add('section-animate');
+                observer.observe(title);
+            });
+
+            // Coin kartları için kademeli animasyon
+            document.querySelectorAll('.coin-card').forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.15}s`; // Gecikmeyi artırdık
+                card.classList.add('fade-in');
+                observer.observe(card);
+            });
+
+            // Haber kartları için kademeli animasyon
+            document.querySelectorAll('.news-card').forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.15}s`; // Gecikmeyi artırdık
+                card.classList.add('fade-in');
+                observer.observe(card);
+            });
+
+            // Smooth scroll davranışını güncelle
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const headerOffset = 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth',
+                            // Daha yavaş scroll için
+                            duration: 1500 // ms cinsinden süre
+                        });
+                    }
+                });
+            });
+
+            // Sayfa yüklenme animasyonu
+            document.body.classList.add('loaded');
+
+            // Mevcut DOMContentLoaded içeriğine ekleyin
+            haberleriGuncelle();
+            
+            // Her 5 dakikada bir haberleri güncelle
+            setInterval(haberleriGuncelle, 300000);
+
+            donusturucuOlustur();
+        });
+
+        // Coin fiyatlarını güncelle
+        setInterval(() => {
+            Object.keys(cryptoData).forEach(coin => {
+                const randomChange = (Math.random() - 0.5) * 2;
+                cryptoData[coin].price *= (1 + randomChange / 100);
+                cryptoData[coin].change = randomChange;
+                
+                // DOM elementlerini bul
+                const coinCard = document.querySelector(`#${coin.toLowerCase()}Chart`).closest('.coin-card');
+                const priceElement = coinCard.querySelector('.current-price');
+                const changeElement = coinCard.querySelector('.price-change');
+                
+                if (priceElement && changeElement) {
+                    // Fiyatı güncelle
+                    priceElement.textContent = `$${cryptoData[coin].price.toFixed(2)}`;
+                    
+                    // Yüzde değişimi güncelle ve rengi ayarla
+                    const changeValue = cryptoData[coin].change;
+                    changeElement.textContent = `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
+                    
+                    // CSS sınıflarını güncelle
+                    changeElement.classList.remove('positive', 'negative');
+                    changeElement.classList.add(changeValue >= 0 ? 'positive' : 'negative');
+                }
+            });
+        }, 30000);
+
+        // Başlangıçta doğru renkleri ayarla
+        document.addEventListener('DOMContentLoaded', () => {
+            Object.keys(cryptoData).forEach(coin => {
+                const coinCard = document.querySelector(`#${coin.toLowerCase()}Chart`).closest('.coin-card');
+                const changeElement = coinCard.querySelector('.price-change');
+                
+                if (changeElement) {
+                    const changeValue = cryptoData[coin].change;
+                    changeElement.classList.remove('positive', 'negative');
+                    changeElement.classList.add(changeValue >= 0 ? 'positive' : 'negative');
+                    changeElement.textContent = `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
+                }
+            });
+        });
+
+        // Arka plan şekilleri için mouse hareketi efekti
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.geometric-shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            shapes.forEach(shape => {
+                const offsetX = (x - 0.5) * 20;
+                const offsetY = (y - 0.5) * 20;
+                shape.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+        });
+
+        async function haberleriFeeddenCek() {
+            try {
+                // Türkçe kripto haber kaynakları
+                const turkceRssKaynaklar = [
+                    'https://www.coinkolik.com/feed/',
+                    'https://kriptokoin.com/feed/',
+                    'https://www.btchaber.com/feed/'
+                ];
+
+                const API_KEY = 'whhza1h2fziyj84nfyl66kfqg3lg6y165gtqo0ho';
+                let tumHaberler = [];
+
+                for (const kaynak of turkceRssKaynaklar) {
+                    try {
+                        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(kaynak)}&api_key=${API_KEY}`);
+                        const data = await response.json();
+
+                        if (data.status === 'ok') {
+                            const kaynakHaberler = data.items.slice(0, 5).map(item => ({
+                                baslik: item.title,
+                                aciklama: item.description.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
+                                resim: item.thumbnail || item.enclosure?.link || 'varsayilan-haber-resmi.jpg',
+                                tarih: new Date(item.pubDate).toLocaleString('tr-TR', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }),
+                                link: item.link,
+                                etiket: belirleHaberEtiketi(item.title)
+                            }));
+                            tumHaberler = [...tumHaberler, ...kaynakHaberler];
+                        }
+                    } catch (hata) {
+                        console.error(`${kaynak} için hata:`, hata);
+                    }
+                }
+
+                // Haberleri tarihe göre sırala ve en yeni 10 haberi döndür
+                return tumHaberler
+                    .sort((a, b) => new Date(b.tarih) - new Date(a.tarih))                    .slice(0, 10);
+
+            } catch (hata) {
+                console.error('Haber çekme hatası:', hata);
+                return [];
+            }
+        }
+
+        function belirleHaberEtiketi(baslik) {
+            const etiketler = {
+                'Bitcoin': 'Bitcoin',
+                'ETH': 'Ethereum',
+                'Ethereum': 'Ethereum',
+                'Solana': 'Solana',
+                'SOL': 'Solana',
+                'BNB': 'BNB Chain',
+                'Cardano': 'Cardano',
+                'ADA': 'Cardano',
+                'XRP': 'XRP',
+                'Ripple': 'XRP',
+                'DOGE': 'Dogecoin',
+                'Dogecoin': 'Dogecoin'
+            };
+
+            for (const [anahtar, etiket] of Object.entries(etiketler)) {
+                if (baslik.includes(anahtar)) {
+                    return etiket;
+                }
+            }
+            return 'Kripto';
+        }
+
+        async function haberleriGuncelle() {
+            const haberlerContainer = document.querySelector('.news-grid');
+            
+            if (haberlerContainer) {
+                // Yükleniyor göstergesi
+                haberlerContainer.innerHTML = `
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Haberler yükleniyor...</p>
+                    </div>
+                `;
+                
+                const haberler = await haberleriFeeddenCek();
+                
+                if (haberler.length === 0) {
+                    haberlerContainer.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>Haberler yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                haberlerContainer.innerHTML = '';
+                
+                haberler.forEach(haber => {
+                    const haberKarti = document.createElement('div');
+                    haberKarti.className = 'news-card fade-in';
+                    haberKarti.innerHTML = `
+                        <a href="${haber.link}" target="_blank" rel="noopener noreferrer">
+                            <div class="news-image">
+                                <img src="${haber.resim}" alt="${haber.baslik}" onerror="this.src='varsayilan-haber-resmi.jpg'">
+                            </div>
+                            <div class="news-content">
+                                <div class="news-tag">${haber.etiket}</div>
+                                <h3>${haber.baslik}</h3>
+                                <p>${haber.aciklama}</p>
+                                <span class="news-date">${haber.tarih}</span>
+                            </div>
+                        </a>
+                    `;
+                    haberlerContainer.appendChild(haberKarti);
+                });
+
+                document.querySelectorAll('.news-card').forEach((card, index) => {
+                    card.style.transitionDelay = `${index * 0.15}s`;
+                    setTimeout(() => card.classList.add('visible'), 100);
+                });
+            }
+        }
+
+        async function donusturucuOlustur() {
+            try {
+                // Desteklenen para birimleri
+                const paraBirimleri = ['try', 'usd', 'eur', 'gbp'];
+                const kriptoParalar = ['bitcoin', 'ethereum', 'solana', 'ripple', 'cardano'];
+
+                // Para birimi seçenekleri için HTML oluştur
+                const paraBirimiHTML = paraBirimleri.map(birim => 
+                    `<option value="${birim}">${birim.toUpperCase()}</option>`
+                ).join('');
+
+                // Kripto para seçenekleri için HTML oluştur
+                const kriptoHTML = kriptoParalar.map(kripto => 
+                    `<option value="${kripto}">${kripto.charAt(0).toUpperCase() + kripto.slice(1)}</option>`
+                ).join('');
+
+                // Dönüştürücü formu oluştur
+                const donusturucuHTML = `
+                    <div class="converter-container">
+                        <h3>Kripto Para Dönüştürücü</h3>
+                        <div class="converter-form">
+                            <div class="form-group">
+                                <label>Miktar</label>
+                                <input type="number" id="amount" min="0" step="any" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Kaynak Para Birimi</label>
+                                <select id="fromCurrency">
+                                    ${kriptoHTML}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hedef Para Birimi</label>
+                                <select id="toCurrency">
+                                    ${paraBirimiHTML}
+                                </select>
+                            </div>
+                            <div class="result" id="convertResult">
+                                1 BTC = ... TRY
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // HTML'i sayfaya ekle
+                document.querySelector('.market-stats .container').insertAdjacentHTML('beforeend', donusturucuHTML);
+
+                // Event listener'ları ekle
+                ['amount', 'fromCurrency', 'toCurrency'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', donusturucuGuncelle);
+                });
+
+                // İlk dönüşümü yap
+                await donusturucuGuncelle();
+
+            } catch (hata) {
+                console.error('Dönüştürücü oluşturma hatası:', hata);
+            }
+        }
+
+        async function donusturucuGuncelle() {
+            const miktar = document.getElementById('amount').value;
+            const kaynakPara = document.getElementById('fromCurrency').value;
+            const hedefPara = document.getElementById('toCurrency').value;
+            const sonucElement = document.getElementById('convertResult');
+
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${kaynakPara}&vs_currencies=${hedefPara}`);
+                const data = await response.json();
+
+                if (data[kaynakPara]) {
+                    const kur = data[kaynakPara][hedefPara];
+                    const sonuc = (miktar * kur).toLocaleString('tr-TR', {
+                        maximumFractionDigits: 2
+                    });
+                    sonucElement.innerHTML = `${miktar} ${kaynakPara.toUpperCase()} = ${sonuc} ${hedefPara.toUpperCase()}`;
+                }
+            } catch (hata) {
+                console.error('Dönüşüm hatası:', hata);
+                sonucElement.innerHTML = 'Dönüşüm sırasında bir hata oluştu';
+            }
+        }
+
+        async function kriptoVerileriniGetir() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&locale=tr');
+                const data = await response.json();
+                
+                // Her kripto para için grafik verisi oluştur
+                data.forEach(coin => {
+                    cryptoData[coin.symbol.toUpperCase()] = {
+                        name: coin.name,
+                        price: coin.current_price,
+                        change: coin.price_change_percentage_24h,
+                        color: `#${Math.floor(Math.random()*16777215).toString(16)}`, // Rastgele renk
+                        history: coin.sparkline_in_7d?.price.slice(-6) || [0,0,0,0,0,0]
+                    };
+                });
+
+                const coinGridHTML = data.map(coin => `
+                    <div class="coin-card fade-in">
+                        <div class="coin-header">
+                            <div class="coin-info">
+                                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                                <div>
+                                    <div class="coin-name">${coin.name}</div>
+                                    <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+                                </div>
+                            </div>
+                            <div class="coin-price">
+                                <div class="current-price">$${coin.current_price.toLocaleString('en-US')}</div>
+                                <div class="price-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+                                    ${coin.price_change_percentage_24h.toFixed(2)}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="coin-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Piyasa Değeri:</span>
+                                <span class="detail-value">$${(coin.market_cap / 1e9).toFixed(2)} Milyar</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">24s Hacim:</span>
+                                <span class="detail-value">$${(coin.total_volume / 1e6).toFixed(2)} Milyon</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelector('.coin-grid').innerHTML = coinGridHTML;
+
+                // Kart animasyonları ve grafikleri oluştur
+                document.querySelectorAll('.coin-card').forEach((card, index) => {
+                    card.style.transitionDelay = `${index * 0.1}s`;
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                        // Grafik oluştur
+                        const symbol = card.querySelector('.coin-symbol').textContent;
+                        createChart(symbol);
+                    }, 100);
+                });
+
+            } catch (hata) {
+                console.error('Kripto veri çekme hatası:', hata);
+                document.querySelector('.coin-grid').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Veriler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Her 1 dakikada bir verileri güncelle
+        setInterval(kriptoVerileriniGetir, 60000);
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            kriptoVerileriniGetir();
+        });
+
+        // Eğitim kartları için gözlemci
+        const educationObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // İçerik öğelerini kademeli olarak göster
+                    const items = entry.target.querySelectorAll('.education-item');
+                    items.forEach((item, i) => {
+                        setTimeout(() => {
+                            item.style.animation = `slideIn 0.5s ease-out ${i * 0.2}s forwards`;
+                        }, index * 100);
+                    });
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // Eğitim kartlarını gözlemle
+        document.querySelectorAll('.education-card').forEach(card => {
+            educationObserver.observe(card);
+        });
+
+        // Quiz Modal Açma ve Kapama Fonksiyonları
+        function quizModalAc(event) {
+            event.preventDefault();
+            const modal = document.getElementById('quizModal');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function quizModalKapat() {
+            const modal = document.getElementById('quizModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            const modal = document.getElementById('quizModal');
+            if (event.target == modal) {
+                quizModalKapat();
+            }
+        }
+
+        setInterval(() => {
+            Object.keys(cryptoData).forEach(coin => {
+                const chartElement = document.querySelector(`#${coin.toLowerCase()}Chart`);
+                if (chartElement) {
+                    const coinCard = chartElement.closest('.coin-card');
+                    if (coinCard) {
+                        // Mevcut güncelleme kodu
+                    }
+                }
+            });
+        }, 30000);
+
+        function quizBaslat() {
+            // Quiz başlatma mantığı buraya gelecek
+            alert('Quiz başlatılıyor...');
+        }
+
+        const quizSorulari = [
+            {
+                soru: "Bitcoin'in yaratıcısı kimdir?",
+                secenekler: ["Satoshi Nakamoto", "Vitalik Buterin", "Charlie Lee", "Roger Ver"],
+                dogruCevap: 0
+            },
+            {
+                soru: "Ethereum'un ana özelliği nedir?",
+                secenekler: ["Akıllı Kontratlar", "Hızlı İşlemler", "Gizlilik", "Düşük Ücretler"],
+                dogruCevap: 0
+            },
+            {
+                soru: "Hangi konsensüs mekanizması daha çevre dostudur?",
+                secenekler: ["Proof of Stake", "Proof of Work", "Proof of Authority", "Proof of Space"],
+                dogruCevap: 0
+            }
+        ];
+
+        let mevcutSoru = 0;
+        let puan = 0;
+
+        function quizModalAc() {
+            document.getElementById('quizModal').classList.add('active');
+        }
+
+        function quizModalKapat() {
+            document.getElementById('quizModal').classList.remove('active');
+            mevcutSoru = 0;
+            puan = 0;
+        }
+
+        function quizBaslat() {
+            mevcutSoru = 0;
+            puan = 0;
+            soruGoster();
+        }
+
+        function soruGoster() {
+            const soru = quizSorulari[mevcutSoru];
+            const quizContent = document.querySelector('.quiz-content');
+            
+            quizContent.innerHTML = `
+                <h3 class="quiz-question">${soru.soru}</h3>
+                <div class="quiz-options">
+                    ${soru.secenekler.map((secenek, index) => `
+                        <button class="quiz-option" onclick="cevapKontrol(${index})">${secenek}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function cevapKontrol(secilenIndex) {
+            const soru = quizSorulari[mevcutSoru];
+            
+            if (secilenIndex === soru.dogruCevap) {
+                puan += 100;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Doğru!',
+                    text: 'Harika gidiyorsun!',
+                    confirmButtonColor: '#9945FF'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Yanlış!',
+                    text: `Doğru cevap: ${soru.secenekler[soru.dogruCevap]}`,
+                    confirmButtonColor: '#9945FF'
+                });
+            }
+
+            mevcutSoru++;
+            
+            if (mevcutSoru < quizSorulari.length) {
+                setTimeout(soruGoster, 1500);
+            } else {
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Quiz Bitti!',
+                        text: `Toplam puanın: ${puan}`,
+                        confirmButtonColor: '#9945FF'
+                    }).then(() => {
+                        quizModalKapat();
+                    });
+                }, 1500);
+            }
+        }
+    </script>
 </body>
 </html>
-~

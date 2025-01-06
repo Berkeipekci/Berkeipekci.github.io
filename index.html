@@ -1070,6 +1070,110 @@
             border-color: var(--primary);
             transform: translateX(10px);
         }
+
+        /* Mobil Uyumluluk İyileştirmeleri */
+        @media (max-width: 768px) {
+            /* Hero Section */
+            .hero h1 {
+                font-size: 2.5rem; /* Başlık boyutunu küçült */
+            }
+
+            .hero p {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+
+            /* Navigation */
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none; /* Mobil menü için gizle */
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--surface);
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            /* Hamburger Menü */
+            .mobile-menu-btn {
+                display: block;
+                font-size: 1.5rem;
+                color: var(--text);
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* Coin Cards */
+            .coin-grid {
+                grid-template-columns: 1fr; /* Tek kolon */
+                padding: 0 1rem;
+            }
+
+            .coin-card {
+                margin-bottom: 1rem;
+            }
+
+            /* Contact Form */
+            .contact-container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            /* Footer */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Tablet Uyumluluğu */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .coin-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* Küçük Ekranlar için Font Boyutları */
+        @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
+
+            .coin-name {
+                font-size: 1rem;
+            }
+
+            .current-price {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Yatay Mobil Görünüm */
+        @media (max-height: 480px) and (orientation: landscape) {
+            .hero {
+                min-height: auto;
+                padding: 4rem 0;
+            }
+        }
     </style>
     <!-- Quiz Modal -->
     <div id="quizModal" class="quiz-modal">
@@ -1098,6 +1202,10 @@
                 <a href="#contact" class="nav-link">İletişim</a>
                 <a href="#" class="nav-link" onclick="quizModalAc()">Quiz</a>
             </div>
+            <!-- Navigation'a eklenecek -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
@@ -2128,7 +2236,63 @@
                 }, 1500);
             }
         }
+
+        // Mobile menü fonksiyonu
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Sayfa kaydırıldığında menüyü kapat
+        document.addEventListener('scroll', () => {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Menü linkine tıklandığında menüyü kapat
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Dokunmatik kaydırma desteği
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchmove', handleTouchMove, false);
+
+        let xDown = null;
+        let yDown = null;
+
+        function handleTouchStart(evt) {
+            xDown = evt.touches[0].clientX;
+            yDown = evt.touches[0].clientY;
+        }
+
+        function handleTouchMove(evt) {
+            if (!xDown || !yDown) {
+                return;
+            }
+
+            const xUp = evt.touches[0].clientX;
+            const yUp = evt.touches[0].clientY;
+
+            const xDiff = xDown - xUp;
+            const yDiff = yDown - yUp;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0) {
+                    // Sola kaydırma
+                } else {
+                    // Sağa kaydırma
+                }
+            }
+
+            xDown = null;
+            yDown = null;
+        }
     </script>
 </body>
 </html>
-
